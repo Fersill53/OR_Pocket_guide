@@ -1,3 +1,4 @@
+<!--
 <section class="add-page">
   <h1>Add Procedure</h1>
 
@@ -35,7 +36,7 @@
       </div>
     </label>
 
-    <!-- small optional blocks for quick instruments/notes as comma-separated lines -->
+    <!-- small optional blocks for quick instruments/notes as comma-separated lines
     <label>
       Instruments (one per line)
       <textarea rows="4" [(ngModel)]="model.instrumentsText" name="instrumentsText"></textarea>
@@ -48,3 +49,110 @@
     </div>
   </form>
 </section>
+
+WORKING
+<section class="add-page">
+  <h1>Add Procedure</h1>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <form (ngSubmit)="submit()" #f="ngForm">
+    <label>
+      Name *
+      <input name="name" required [(ngModel)]="model.name" />
+    </label>
+
+    <label>
+      Service *
+      <input name="service" required [(ngModel)]="model.service" />
+    </label>
+
+    <label>
+      Position
+      <input name="position" [(ngModel)]="model.position" />
+    </label>
+
+    <label>
+      Anesthesia
+      <input name="anesthesia" [(ngModel)]="model.anesthesia" />
+    </label>
+
+    <label>
+      Tags
+      <div class="tag-row">
+        <input placeholder="type tag and press Add" [(ngModel)]="tagInput" name="tagInput" (keydown.enter)="$event.preventDefault(); addTag()" />
+        <button type="button" class="btn" (click)="addTag()">Add</button>
+      </div>
+      <div class="tag-list" *ngIf="model.tags?.length">
+        <button type="button" class="tag" *ngFor="let t of model.tags" (click)="removeTag(t)">{{ t }} ×</button>
+      </div>
+    </label>
+
+    <label>
+      Instruments (one per line)
+      <textarea rows="4" [(ngModel)]="instrumentsText" name="instrumentsText"></textarea>
+      <small>Use one item per line — we'll convert when saving.</small>
+    </label>
+
+    <div class="actions">
+      <button class="btn" type="submit" [disabled]="saving">Create</button>
+      <a class="btn" routerLink="/procedures">Cancel</a>
+    </div>
+  </form>
+</section>
+-->
+
+<!--ADD PROC-->
+
+
+<!-- src/app/features/procedures/add-procedure/add-procedure.component.html -->
+<section class="add-page">
+  <h1>Add Procedure</h1>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <form (ngSubmit)="submit()" #f="ngForm">
+    <label>
+      Name *
+      <input name="name" required [(ngModel)]="model.name" />
+    </label>
+
+    <label>
+      Service *
+      <input name="service" required [(ngModel)]="model.service" />
+    </label>
+
+    <label>
+      Position
+      <input name="position" [(ngModel)]="model.position" />
+    </label>
+
+    <label>
+      Anesthesia
+      <input name="anesthesia" [(ngModel)]="model.anesthesia" />
+    </label>
+
+    <label>
+      Tags
+      <div class="tag-row">
+        <input placeholder="type tag and press Add" [(ngModel)]="tagInput" name="tagInput" (keydown.enter)="$event.preventDefault(); addTag()" />
+        <button type="button" class="btn" (click)="addTag()">Add</button>
+      </div>
+      <div class="tag-list" *ngIf="model.tags?.length">
+        <button type="button" class="tag" *ngFor="let t of model.tags" (click)="removeTag(t)">{{ t }} ×</button>
+      </div>
+    </label>
+
+    <label>
+      Instruments (one per line)
+      <textarea rows="4" [(ngModel)]="instrumentsText" name="instrumentsText"></textarea>
+      <small>One instrument per line. We'll convert to structured items on save.</small>
+    </label>
+
+    <div class="actions">
+      <button class="btn" type="submit" [disabled]="saving">Create</button>
+      <a class="btn" routerLink="/procedures">Cancel</a>
+    </div>
+  </form>
+</section>
+

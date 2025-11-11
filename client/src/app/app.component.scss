@@ -1,0 +1,68 @@
+/* src/app/app.component.scss */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 28px;
+  background: var(--header-bg);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nav-link {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  opacity: 1;
+}
+
+.add-btn {
+  background: var(--accent);
+  padding: 6px 14px;
+  border-radius: 6px;
+  color: var(--text-on-accent);
+  font-weight: 600;
+}
+
+.theme-toggle {
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+main {
+  flex: 1;
+  padding: 32px;
+}
+
+footer {
+  padding: 16px;
+  text-align: center;
+  opacity: 0.6;
+  border-top: 1px solid var(--border);
+}

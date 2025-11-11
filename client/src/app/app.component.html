@@ -1,0 +1,22 @@
+<header class="app-header">
+  <div class="left">
+    <span class="logo">{{ title }}</span>
+  </div>
+
+  <nav>
+    <a class="nav-link" routerLink="/procedures" routerLinkActive="active">Procedures</a>
+    <a class="nav-link add-btn" routerLink="/procedures/add">+ Add</a>
+
+    <button class="theme-toggle" (click)="toggleTheme()" [attr.aria-pressed]="isDark">
+      {{ isDark ? '☾ Dark' : '☼ Light' }}
+    </button>
+  </nav>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<footer>
+  Built for Surgical Tech learning • Demo
+</footer>

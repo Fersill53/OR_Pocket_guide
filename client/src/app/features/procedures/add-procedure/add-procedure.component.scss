@@ -1,3 +1,4 @@
+/*
 .add-page { max-width:800px; margin:0 auto; }
 label { display:block; margin-bottom:12px; }
 input, textarea { width:100%; padding:8px; border-radius:8px; border:1px solid var(--muted-border); }
@@ -6,3 +7,14 @@ input, textarea { width:100%; padding:8px; border-radius:8px; border:1px solid v
 .tag { background:var(--tag-bg); border-radius:999px; padding:6px 8px; border:1px solid var(--muted-border); cursor:pointer; }
 .actions { margin-top:16px; display:flex; gap:8px; }
 .error { color: #ef4444; margin-bottom:12px; }
+*/
+
+/* src/app/features/procedures/add-procedure/add-procedure.component.scss */
+.add-page { max-width:800px; margin:0 auto; }
+label { display:block; margin-bottom:12px; }
+input, textarea { width:100%; padding:8px; border-radius:8px; border:1px solid var(--muted-border); background:var(--card); color:var(--text); }
+.tag-row { display:flex; gap:8px; }
+.tag-list { margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; }
+.tag { background:var(--tag-bg); border-radius:999px; padding:6px 8px; border:1px solid var(--muted-border); cursor:pointer; }
+.actions { margin-top:16px; display:flex; gap:8px; }
+.error { color:#ef4444; margin-bottom:12px; }
