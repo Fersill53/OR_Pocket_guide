@@ -1,0 +1,119 @@
+<section class="detail-page" *ngIf="(procedure$ | async) as p; else loading">
+  <a routerLink="/procedures" class="back">← Back</a>
+
+  <div class="header-row" style="display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <h1 *ngIf="!editMode">{{ p.name }}</h1>
+      <div *ngIf="editMode">
+        <input [(ngModel)]="editable!.name" />
+      </div>
+      <p class="meta">{{ p.service }} • {{ p.position || '—' }} • {{ p.anesthesia || '—' }}</p>
+    </div>
+
+    <div>
+      <button *ngIf="!editMode" class="btn" (click)="startEdit(p)">Edit</button>
+      <span *ngIf="editMode">
+        <button class="btn" (click)="saveEdit()">Save</button>
+        <button class="btn" (click)="cancelEdit()">Cancel</button>
+      </span>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h3>Room Setup</h3>
+      <ul *ngIf="!editMode">
+        <li *ngFor="let r of p.roomSetup">{{ r }}</li>
+      </ul>
+
+      <div *ngIf="editMode">
+        <div *ngFor="let r of editable!.roomSetup ?? []; let i = index" class="edit-row">
+          <input [(ngModel)]="editable!.roomSetup![i]" />
+        </div>
+        <button class="btn" (click)="editable!.roomSetup = (editable!.roomSetup ?? []).concat(['New item'])">Add</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Instruments</h3>
+
+      <ul *ngIf="!editMode">
+        <li *ngFor="let i of p.instruments">{{ i.name }} <small *ngIf="i.qty">×{{ i.qty }}</small></li>
+      </ul>
+
+      <div *ngIf="editMode">
+        <div *ngFor="let it of editable!.instruments ?? []; let idx = index" class="edit-row">
+          <input [(ngModel)]="editable!.instruments![idx].name" />
+          <input type="number" style="width:80px" [(ngModel)]="editable!.instruments![idx].qty" />
+          <button class="btn" (click)="removeInstrument(idx)">Remove</button>
+        </div>
+
+        <div style="margin-top:8px;">
+          <button class="btn" (click)="addInstrument()">Add instrument</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" *ngIf="(p.supplies?.length || editable?.supplies?.length)">
+      <h3>Supplies</h3>
+      <ul *ngIf="!editMode">
+        <li *ngFor="let s of p.supplies">{{ s.name }} <small *ngIf="s.qty">×{{ s.qty }}</small></li>
+      </ul>
+      <div *ngIf="editMode">
+        <div *ngFor="let s of editable!.supplies ?? []; let i = index" class="edit-row">
+          <input [(ngModel)]="editable!.supplies![i].name" />
+          <input type="number" style="width:80px" [(ngModel)]="editable!.supplies![i].qty" />
+        </div>
+        <button class="btn" (click)="editable!.supplies = (editable!.supplies ?? []).concat([{name:'New supply'}])">Add</button>
+      </div>
+    </div>
+
+    <div class="panel" *ngIf="(p.medications?.length || editable?.medications?.length)">
+      <h3>Medications</h3>
+      <ul *ngIf="!editMode">
+        <li *ngFor="let m of p.medications">{{ m.name }} <small *ngIf="m.notes">— {{ m.notes }}</small></li>
+      </ul>
+
+      <div *ngIf="editMode">
+        <div *ngFor="let m of editable!.medications ?? []; let i = index" class="edit-row">
+          <input [(ngModel)]="editable!.medications![i].name" />
+          <input [(ngModel)]="editable!.medications![i].notes" placeholder="notes" />
+        </div>
+        <button class="btn" (click)="editable!.medications = (editable!.medications ?? []).concat([{name:'New med'}])">Add</button>
+      </div>
+    </div>
+
+    <div class="panel" *ngIf="(p.sutures?.length || editable?.sutures?.length)">
+      <h3>Sutures</h3>
+      <ul *ngIf="!editMode">
+        <li *ngFor="let s of p.sutures">{{ s.name }}</li>
+      </ul>
+
+      <div *ngIf="editMode">
+        <div *ngFor="let s of editable!.sutures ?? []; let i = index" class="edit-row">
+          <input [(ngModel)]="editable!.sutures![i].name" />
+        </div>
+        <button class="btn" (click)="editable!.sutures = (editable!.sutures ?? []).concat([{name:'New suture'}])">Add</button>
+      </div>
+    </div>
+
+    <div class="panel" *ngIf="(p.notes?.length || editable?.notes?.length)">
+      <h3>Notes</h3>
+
+      <ul *ngIf="!editMode">
+        <li *ngFor="let n of p.notes">{{ n }}</li>
+      </ul>
+
+      <div *ngIf="editMode">
+        <div *ngFor="let n of editable!.notes ?? []; let i = index" class="edit-row">
+          <input [(ngModel)]="editable!.notes![i]" />
+        </div>
+        <button class="btn" (click)="editable!.notes = (editable!.notes ?? []).concat([''])">Add</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #loading>
+  <div class="loading">Loading procedure…</div>
+</ng-template>

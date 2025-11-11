@@ -1,0 +1,11 @@
+.detail-page { max-width:1100px; margin:0 auto; }
+.back { display:inline-block; margin-bottom:12px; text-decoration:none; color:var(--muted); }
+h1 { margin:0 0 6px 0; font-size:1.4rem; }
+.meta { color:var(--muted); margin-bottom:12px; }
+.grid { display:grid; gap:12px; grid-template-columns: repeat(auto-fill,minmax(320px,1fr)); }
+.panel { border:1px solid var(--muted-border); border-radius:10px; padding:12px; background:var(--card); }
+.panel h3 { margin:0 0 .5rem; font-size:1rem; }
+.loading { color:var(--muted); padding:20px 0; }
+small { color:var(--muted); }
+.edit-row { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
+.edit-row input { flex:1; }

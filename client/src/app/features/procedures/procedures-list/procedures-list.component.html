@@ -1,0 +1,38 @@
+<section class="list-page">
+  <div class="toolbar">
+    <h1>Procedures</h1>
+
+    <div class="search">
+      <input
+        type="search"
+        placeholder="Search name, service, tags…"
+        [(ngModel)]="q"
+        (ngModelChange)="onQuery($event)"
+      />
+      <button *ngIf="q" class="btn small" (click)="clear()">Clear</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading$ | async" class="loading">Loading procedures…</div>
+
+  <div *ngIf="!(loading$ | async)">
+    <div *ngIf="(empty$ | async)" class="empty">
+      No procedures found. Try clearing the search or add data to <code>src/assets/procedures.json</code>.
+    </div>
+
+    <ul class="cards" *ngIf="!(empty$ | async)">
+      <li *ngFor="let p of (filtered$ | async)!" class="card">
+        <div class="card-body">
+          <h3>{{ p.name }}</h3>
+          <p class="meta">{{ p.service }} • {{ p.position || '—' }} • {{ p.anesthesia || '—' }}</p>
+          <div class="tags">
+            <button class="tag" *ngFor="let t of p.tags">{{ t }}</button>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a [routerLink]="['/procedures', p.id]" class="btn">View setup</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
