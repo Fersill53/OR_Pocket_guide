@@ -9,7 +9,7 @@ input, textarea { width:100%; padding:8px; border-radius:8px; border:1px solid v
 .error { color: #ef4444; margin-bottom:12px; }
 */
 
-/* src/app/features/procedures/add-procedure/add-procedure.component.scss */
+/* src/app/features/procedures/add-procedure/add-procedure.component.scss 
 .add-page { max-width:800px; margin:0 auto; }
 label { display:block; margin-bottom:12px; }
 input, textarea { width:100%; padding:8px; border-radius:8px; border:1px solid var(--muted-border); background:var(--card); color:var(--text); }
@@ -17,4 +17,36 @@ input, textarea { width:100%; padding:8px; border-radius:8px; border:1px solid v
 .tag-list { margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; }
 .tag { background:var(--tag-bg); border-radius:999px; padding:6px 8px; border:1px solid var(--muted-border); cursor:pointer; }
 .actions { margin-top:16px; display:flex; gap:8px; }
+.error { color:#ef4444; margin-bottom:12px; }
+*/
+
+/* src/app/features/procedures/add-procedure/add-procedure.component.scss */
+.add-page { max-width:1000px; margin:0 auto; padding-bottom:40px; }
+
+.row { display:flex; gap:16px; }
+.row label { flex:1; }
+
+.two-col { display:flex; gap:16px; margin-top:12px; }
+.two-col label { flex:1; }
+
+label { display:block; margin-top:12px; color:var(--text); }
+input, textarea {
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid var(--muted-border);
+  background:var(--card);
+  color:var(--text);
+  box-sizing:border-box;
+}
+
+.tag-row { display:flex; gap:8px; margin-top:6px; }
+.tag-list { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+.tag { background:var(--tag-bg); padding:6px 10px; border-radius:999px; border:1px solid var(--muted-border); cursor:pointer; }
+
+.actions { margin-top:18px; display:flex; gap:8px; }
+.btn { padding:8px 12px; border-radius:8px; border:1px solid var(--muted-border); background:var(--card); color:var(--text); text-decoration:none; cursor:pointer; }
+.btn.primary { background: var(--accent); color: var(--text-on-accent); border-color: transparent; font-weight:600; }
+
+.hint { margin-top:12px; color:var(--muted); font-size:0.95rem; }
 .error { color:#ef4444; margin-bottom:12px; }
