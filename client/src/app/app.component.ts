@@ -63,6 +63,7 @@ export class AppComponent {
 }
 */
 
+/*
 // src/app/app.component.ts
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
@@ -98,5 +99,44 @@ export class AppComponent {
       'data-theme',
       this.isDark ? 'dark' : 'light'
     );
+  }
+}
+*/
+
+// src/app/app.component.ts
+import { Component } from '@angular/core';
+import { RouterOutlet, RouterLink } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, RouterLink],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  title = 'OR Setup Reference';
+  isDark = true;
+
+  constructor() {
+    // read saved preference (fall back to true for dark)
+    const saved = localStorage.getItem('theme');
+    if (saved) {
+      this.isDark = saved === 'dark';
+    }
+    this.applyTheme();
+  }
+
+  toggleTheme() {
+    this.isDark = !this.isDark;
+    localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
+    this.applyTheme();
+  }
+
+  private applyTheme() {
+    // use .dark class because your global styles rely on `.dark { --var: ... }`
+    const root = document.documentElement;
+    if (this.isDark) root.classList.add('dark');
+    else root.classList.remove('dark');
   }
 }
