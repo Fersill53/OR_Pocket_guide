@@ -1,0 +1,20 @@
+{
+  "procedures": [
+    {
+      "id": "shoulder-arthroscopy",
+      "name": "Shoulder Arthroscopy (Basic)",
+      "service": "Ortho",
+      "position": "Beach Chair",
+      "anesthesia": "General",
+      "roomSetup": ["Arthroscopy tower on operative side", "Fluid management & shaver ready"],
+      "drapes": [{ "name": "Shoulder drape pack" }, { "name": "U-drape" }],
+      "instruments": [{ "name": "Basic Ortho Tray" }, { "name": "Arthroscopy Set" }],
+      "supplies": [{ "name": "Arthroscopy tubing" }, { "name": "Cannulas", "qty": 2 }],
+      "medications": [{ "name": "Local anesthetic", "notes": "Per surgeon" }],
+      "sutures": [{ "name": "2-0 Vicryl" }, { "name": "3-0 Nylon" }],
+      "dressings": [{ "name": "ABD" }, { "name": "Tegaderm" }],
+      "notes": ["Warm fluids ready", "White balance the camera"],
+      "tags": ["shoulder", "arthroscopy", "sports"]
+    }
+  ]
+}

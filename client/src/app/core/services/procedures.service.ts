@@ -61,6 +61,7 @@ export class ProceduresService {
 }
 */
 
+/*
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, switchMap, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -101,12 +102,12 @@ export class ProceduresService {
       });
   }
 
-  /** fetch all */
+  /** fetch all *
   getAll(): Observable<Procedure[]> {
     return this.store$.asObservable();
   }
 
-  /** get one by ID */
+  /** get one by ID 
   getById(id: string): Observable<Procedure | undefined> {
     return this.getAll().pipe(
       switchMap(list => of(list.find(p => p.id === id)))
@@ -134,3 +135,82 @@ export class ProceduresService {
     return of(proc);
   }
 }
+
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { Procedure } from '../models/procedure.model';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ProceduresService {
+  private readonly baseUrl = 'http://localhost:3000'; // ✅ Change URL if needed
+
+  constructor(private http: HttpClient) {}
+
+  // ✅ GET all procedures
+  getAll(): Observable<Procedure[]> {
+    return this.http.get<Procedure[]>(`${this.baseUrl}/procedures`);
+  }
+
+  // ✅ GET one procedure by id
+  getById(id: string): Observable<Procedure | undefined> {
+    return this.http.get<Procedure>(`${this.baseUrl}/procedures/${id}`);
+  }
+
+  // ✅ POST new procedure (added)
+  createProcedure(proc: Procedure): Observable<Procedure> {
+    return this.http.post<Procedure>(`${this.baseUrl}/procedures`, proc);
+  }
+
+  // ✅ PUT update existing procedure
+  updateProcedure(proc: Procedure): Observable<Procedure> {
+    return this.http.put<Procedure>(`${this.baseUrl}/procedures/${proc.id}`, proc);
+  }
+
+  // ✅ DELETE a procedure
+  deleteProcedure(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/procedures/${
+    */
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Procedure } from '../models/procedure.model';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ProceduresService {
+  private readonly baseUrl = 'http://localhost:3000'; // Change if needed
+
+  constructor(private http: HttpClient) {}
+
+  // ✅ GET all procedures
+  getAll(): Observable<Procedure[]> {
+    return this.http.get<Procedure[]>(`${this.baseUrl}/procedures`);
+  }
+
+  // ✅ GET one procedure by id
+  getById(id: string): Observable<Procedure> {
+    return this.http.get<Procedure>(`${this.baseUrl}/procedures/${id}`);
+  }
+
+  // ✅ POST create new procedure
+  createProcedure(proc: Procedure): Observable<Procedure> {
+    return this.http.post<Procedure>(`${this.baseUrl}/procedures`, proc);
+  }
+
+  // ✅ PUT update existing procedure
+  updateProcedure(proc: Procedure): Observable<Procedure> {
+    return this.http.put<Procedure>(`${this.baseUrl}/procedures/${proc.id}`, proc);
+  }
+
+  // ✅ DELETE procedure
+  deleteProcedure(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/procedures/${id}`);
+  }
+}
+
