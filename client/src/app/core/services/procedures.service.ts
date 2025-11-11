@@ -1,74 +1,60 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Procedure } from '../models/procedure.model';
-import { map } from 'rxjs/operators';
 
-const STORAGE_KEY = 'orref:procedures';
+const STORAGE_KEY = 'or_procedures';
 
 @Injectable({ providedIn: 'root' })
 export class ProceduresService {
-  private url = '/assets/procedures.json';
-  private store$ = new BehaviorSubject<Procedure[]>([]);
+  private store$ = new BehaviorSubject<Procedure[]>(this.load());
 
-  constructor(private http: HttpClient) {
-    this.loadInitial();
-  }
-
-  private loadInitial() {
+  private load(): Procedure[] {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed: Procedure[] = JSON.parse(raw);
-        this.store$.next(parsed);
-        return;
-      }
-    } catch (e) {
-      console.warn('Failed reading procedures from storage, loading from assets', e);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
     }
-
-    this.http.get<Procedure[]>(this.url).subscribe({
-      next: list => {
-        this.store$.next(list || []);
-      },
-      error: err => {
-        console.warn('Failed to load procedures.json', err);
-        this.store$.next([]); // empty list so UI works
-      }
-    });
   }
 
+  private save(list: Procedure[]) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    } catch (e) {
+      console.warn('Storage save failed', e);
+    }
+  }
+
+  /** Fetch all procedures */
   getAll(): Observable<Procedure[]> {
     return this.store$.asObservable();
   }
 
+  /** Get one by ID */
   getById(id: string): Observable<Procedure | undefined> {
-    return this.store$.pipe(map(list => list.find(p => p.id === id)));
+    const found = this.store$.value.find(p => p.id === id);
+    return of(found);
   }
 
-  updateProcedure(updated: Procedure): Observable<Procedure> {
-    const list = [...(this.store$.value ?? [])];
-    const idx = list.findIndex(p => p.id === updated.id);
-    if (idx >= 0) {
-      list[idx] = updated;
-    } else {
-      list.push(updated);
-    }
+  /** Update existing */
+  updateProcedure(proc: Procedure): Observable<Procedure> {
+    const list = this.store$.value.map(p => (p.id === proc.id ? proc : p));
     this.store$.next(list);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-    } catch (e) {
-      console.warn('Failed to save procedures to localStorage', e);
-    }
-    return of(updated);
+    this.save(list);
+    return of(proc);
   }
 
-  saveAll(list: Procedure[]) {
+  /** Add new procedure */
+  addProcedure(newProc: Omit<Procedure, 'id'>): Observable<Procedure> {
+    const id = (window as any).crypto?.randomUUID
+      ? (window as any).crypto.randomUUID()
+      : 'p-' + Date.now();
+
+    const proc: Procedure = { id, ...newProc };
+    const list = [...this.store$.value, proc];
+
     this.store$.next(list);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-    } catch (e) {
-      console.warn('Failed to save procedures to localStorage', e);
-    }
+    this.save(list);
+    return of(proc);
   }
 }

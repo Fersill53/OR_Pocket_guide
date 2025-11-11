@@ -1,3 +1,4 @@
+/*
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule, ActivatedRoute } from "@angular/router";
@@ -29,6 +30,74 @@ export class ProcedureDetailComponent {
   }
 
   startEdit(p: Procedure) {
+    this.editable = JSON.parse(JSON.stringify(p)) as Procedure;
+    this.editMode = true;
+  }
+
+  cancelEdit() {
+    this.editMode = false;
+    this.editable = undefined;
+  }
+
+  saveEdit() {
+    if (!this.editable) return;
+    this.svc.updateProcedure(this.editable).subscribe(() => {
+      this.editMode = false;
+      this.editable = undefined;
+    });
+  }
+
+  addInstrument() {
+    if (!this.editable) return;
+    this.editable.instruments = this.editable.instruments ?? [];
+    this.editable.instruments.push({ name: 'New instrument' });
+  }
+
+  removeInstrument(i: number) {
+    if (!this.editable) return;
+    this.editable.instruments?.splice(i, 1);
+  }
+}
+*/
+
+import { Component } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterModule, ActivatedRoute } from "@angular/router";
+import { FormsModule } from "@angular/forms";
+import { Observable } from "rxjs";
+import { switchMap } from "rxjs/operators";
+
+import { ProceduresService } from "../../../core/services/procedures.service";
+import { Procedure } from "../../../core/models/procedure.model";
+
+@Component({
+  selector: 'app-procedure-detail',
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule],
+  templateUrl: './procedure-detail.component.html',
+  styleUrls: ['./procedure-detail.component.scss']
+})
+export class ProcedureDetailComponent {
+  readonly procedure$!: Observable<Procedure | undefined>;
+  editMode = false;
+  editable?: Procedure;
+
+  constructor(private route: ActivatedRoute, private svc: ProceduresService) {
+    // create the observable inside the constructor so 'route' and 'svc' are defined
+    this.procedure$ = this.route.paramMap.pipe(
+      switchMap(params => {
+        const id = params.get('id');
+        // gracefully handle missing id
+        if (!id) {
+          return new Observable<Procedure | undefined>(sub => { sub.next(undefined); sub.complete(); });
+        }
+        return this.svc.getById(id);
+      })
+    );
+  }
+
+  startEdit(p: Procedure) {
+    // shallow-deep clone to avoid mutating store directly
     this.editable = JSON.parse(JSON.stringify(p)) as Procedure;
     this.editMode = true;
   }
