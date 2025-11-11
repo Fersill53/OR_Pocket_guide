@@ -1,1 +1,63 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --bg: #ffffff;
+  --card: #ffffff;
+  --header: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --muted-border: #e6e6e6;
+  --tag-bg: #f8fafc;
+  --accent: #2563eb;
+}
+
+.dark {
+  --bg: #0b1220;
+  --card: #0f1724;
+  --header: #071226;
+  --text: #e6eef8;
+  --muted: #9aa9bf;
+  --muted-border: #1f2a3a;
+  --tag-bg: #0b1726;
+  --accent: #60a5fa;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a { color: var(--accent); }
+
+button, .btn {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--muted-border);
+}
+
+/* reuse some list/card styles used earlier */
+.card {
+  background: var(--card);
+  border: 1px solid var(--muted-border);
+  box-shadow: none;
+}
+
+/* tag */
+.tag {
+  background: var(--tag-bg);
+  color: var(--text);
+}
+
+/* input styles */
+input, textarea {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--muted-border);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+/* small helper for edit inputs in detail */
+.edit-row { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
+.edit-row input { flex:1; }
