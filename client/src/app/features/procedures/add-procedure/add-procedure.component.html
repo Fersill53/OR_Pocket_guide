@@ -155,9 +155,9 @@ WORKING
     </div>
   </form>
 </section>
--->
 
-<!-- src/app/features/procedures/add-procedure/add-procedure.component.html -->
+
+<!-- src/app/features/procedures/add-procedure/add-procedure.component.html 
 <section class="add-page">
   <h1>Add Procedure</h1>
 
@@ -255,6 +255,108 @@ WORKING
     <p class="hint">
       Tip: for supplies enter `Cannula | 2` to set a quantity, or `Lidocaine | Per surgeon` for medication notes.
     </p>
+  </form>
+</section>
+-->
+
+<section class="add-page">
+  <h1>Add Procedure</h1>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <form (ngSubmit)="submit()" #f="ngForm" autocomplete="off">
+    <div class="row">
+      <label>
+        Name *
+        <input name="name" required [(ngModel)]="model.name" />
+      </label>
+
+      <label>
+        Service *
+        <input name="service" required [(ngModel)]="model.service" />
+      </label>
+    </div>
+
+    <div class="row">
+      <label>
+        Position
+        <input name="position" [(ngModel)]="model.position" />
+      </label>
+
+      <label>
+        Anesthesia
+        <input name="anesthesia" [(ngModel)]="model.anesthesia" />
+      </label>
+    </div>
+
+    <label>
+      Tags
+      <div class="tag-row">
+        <input placeholder="type tag and press Add" [(ngModel)]="tagInput" name="tagInput" (keydown.enter)="$event.preventDefault(); addTag()" />
+        <button type="button" class="btn" (click)="addTag()">Add</button>
+      </div>
+      <div class="tag-list" *ngIf="model.tags?.length">
+        <button type="button" class="tag" *ngFor="let t of model.tags" (click)="removeTag(t)">{{ t }} ×</button>
+      </div>
+    </label>
+
+    <div class="two-col">
+      <label>
+        Room Setup (one per line)
+        <textarea rows="4" [(ngModel)]="roomSetupText" name="roomSetupText"></textarea>
+      </label>
+
+      <label>
+        Drapes (Name | notes)
+        <textarea rows="4" [(ngModel)]="drapesText" name="drapesText"></textarea>
+      </label>
+    </div>
+
+    <div class="two-col">
+      <label>
+        Instruments (one per line)
+        <textarea rows="4" [(ngModel)]="instrumentsText" name="instrumentsText"></textarea>
+      </label>
+
+      <label>
+        Supplies (Name | qty)
+        <textarea rows="4" [(ngModel)]="suppliesText" name="suppliesText"></textarea>
+      </label>
+    </div>
+
+    <div class="two-col">
+      <label>
+        Medications (Name | note)
+        <textarea rows="4" [(ngModel)]="medicationsText" name="medicationsText"></textarea>
+      </label>
+
+      <label>
+        Sutures (one per line)
+        <textarea rows="4" [(ngModel)]="suturesText" name="suturesText"></textarea>
+      </label>
+    </div>
+
+    <div class="two-col">
+      <label>
+        Dressings (one per line)
+        <textarea rows="4" [(ngModel)]="dressingsText" name="dressingsText"></textarea>
+      </label>
+
+      <label>
+        Notes (one per line)
+        <textarea rows="4" [(ngModel)]="notesText" name="notesText"></textarea>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" type="submit" [disabled]="saving">Create Procedure</button>
+
+      <!-- Use routerLink for guaranteed navigation -->
+      <a class="btn" routerLink="/procedures" role="button">Cancel</a>
+      <!-- (click) fallback still present on TS side, but this anchor will handle it -->
+    </div>
+
+    <p class="hint">Tip: use "Name | 2" for supplies (qty) or "Name | Per surgeon" for medication notes.</p>
   </form>
 </section>
 

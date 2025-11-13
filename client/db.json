@@ -6,15 +6,149 @@
       "service": "Ortho",
       "position": "Beach Chair",
       "anesthesia": "General",
-      "roomSetup": ["Arthroscopy tower on operative side", "Fluid management & shaver ready"],
-      "drapes": [{ "name": "Shoulder drape pack" }, { "name": "U-drape" }],
-      "instruments": [{ "name": "Basic Ortho Tray" }, { "name": "Arthroscopy Set" }],
-      "supplies": [{ "name": "Arthroscopy tubing" }, { "name": "Cannulas", "qty": 2 }],
-      "medications": [{ "name": "Local anesthetic", "notes": "Per surgeon" }],
-      "sutures": [{ "name": "2-0 Vicryl" }, { "name": "3-0 Nylon" }],
-      "dressings": [{ "name": "ABD" }, { "name": "Tegaderm" }],
-      "notes": ["Warm fluids ready", "White balance the camera"],
-      "tags": ["shoulder", "arthroscopy", "sports"]
+      "roomSetup": [
+        "Arthroscopy tower on operative side",
+        "Fluid management & shaver ready"
+      ],
+      "drapes": [
+        {
+          "name": "Shoulder drape pack"
+        },
+        {
+          "name": "U-drape"
+        }
+      ],
+      "instruments": [
+        {
+          "name": "Basic Ortho Tray"
+        },
+        {
+          "name": "Arthroscopy Set"
+        }
+      ],
+      "supplies": [
+        {
+          "name": "Arthroscopy tubing"
+        },
+        {
+          "name": "Cannulas",
+          "qty": 2
+        }
+      ],
+      "medications": [
+        {
+          "name": "Local anesthetic",
+          "notes": "Per surgeon"
+        }
+      ],
+      "sutures": [
+        {
+          "name": "2-0 Vicryl"
+        },
+        {
+          "name": "3-0 Nylon"
+        }
+      ],
+      "dressings": [
+        {
+          "name": "ABD"
+        },
+        {
+          "name": "Tegaderm"
+        }
+      ],
+      "notes": [
+        "Warm fluids ready",
+        "White balance the camera"
+      ],
+      "tags": [
+        "shoulder",
+        "arthroscopy",
+        "sports"
+      ]
+    },
+    {
+      "id": "2dfe",
+      "name": "Robotic Cholecystectomy",
+      "service": "General",
+      "position": "Supine",
+      "anesthesia": "General",
+      "roomSetup": [
+        "Robot on the Left"
+      ],
+      "drapes": [
+        {
+          "name": "Sticky Utility drapes"
+        },
+        {
+          "name": "Lap drape w/pouches"
+        }
+      ],
+      "instruments": [
+        {
+          "name": "Da Vinci Xi Instruments"
+        },
+        {
+          "name": "Da Vinci camera"
+        },
+        {
+          "name": "Da Vinci Handheld Camera / Light cord"
+        },
+        {
+          "name": "Suction/Irrigator"
+        },
+        {
+          "name": "Robotic Hook"
+        }
+      ],
+      "supplies": [
+        {
+          "name": "Trocar white lids"
+        },
+        {
+          "name": "5mm port"
+        },
+        {
+          "name": "Electro Lube"
+        },
+        {
+          "name": "Scissor tip"
+        },
+        {
+          "name": "Defog igloo"
+        },
+        {
+          "name": "dermabond"
+        },
+        {
+          "name": "pmi closure"
+        }
+      ],
+      "medications": [
+        {
+          "name": ".25% Lidocaine plain"
+        }
+      ],
+      "sutures": [
+        {
+          "name": "0 Vicryl UR6"
+        },
+        {
+          "name": "4-0 Monocryl PS2"
+        }
+      ],
+      "dressings": [
+        {
+          "name": "Dermabond"
+        }
+      ],
+      "notes": [
+        "ALWAYS HAVE ROBOT HOOK"
+      ],
+      "tags": [
+        "General",
+        "Robotic"
+      ]
     }
   ]
 }

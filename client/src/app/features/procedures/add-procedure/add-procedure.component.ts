@@ -465,7 +465,7 @@ export class AddProcedureComponent {
     this.router.navigate(['/procedures']); // ✅ <-- send them back to procedures list
   }
 }
-*/
+
 
 // src/app/features/procedures/add-procedure/add-procedure.component.ts
 import { Component } from '@angular/core';
@@ -633,3 +633,294 @@ export class AddProcedureComponent {
   }
 }
 
+
+// src/app/features/procedures/add-procedure/add-procedure.component.ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ProceduresService } from '../../../core/services/procedures.service';
+import { Procedure, Item } from '../../../core/models/procedure.model';
+import { of } from 'rxjs';
+
+@Component({
+  selector: 'app-add-procedure',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './add-procedure.component.html',
+  styleUrls: ['./add-procedure.component.scss']
+})
+export class AddProcedureComponent {
+  model: Partial<Procedure> = {
+    name: '',
+    service: '',
+    position: '',
+    anesthesia: '',
+    tags: []
+  };
+
+  roomSetupText = '';
+  drapesText = '';
+  instrumentsText = '';
+  suppliesText = '';
+  medicationsText = '';
+  suturesText = '';
+  dressingsText = '';
+  notesText = '';
+
+  tagInput = '';
+  saving = false;
+  error: string | null = null;
+
+  constructor(private svc: ProceduresService, private router: Router) {}
+
+  addTag() {
+    const t = (this.tagInput ?? '').trim();
+    if (!t) return;
+    this.model.tags = Array.from(new Set([...(this.model.tags ?? []), t]));
+    this.tagInput = '';
+  }
+
+  removeTag(t: string) {
+    this.model.tags = (this.model.tags ?? []).filter(x => x !== t);
+  }
+
+  private validate(): string | null {
+    if (!this.model.name || !this.model.name.trim()) return 'Name is required';
+    if (!this.model.service || !this.model.service.trim()) return 'Service is required';
+    return null;
+  }
+
+  private parseLinesToStrings(text: string): string[] {
+    return (text ?? '').split('\n').map(s => s.trim()).filter(Boolean);
+  }
+
+  private parseLinesToItems(text: string, supportsQty = false, supportsNotes = false): Item[] {
+    return this.parseLinesToStrings(text).map(line => {
+      const parts = line.split('|').map(p => p.trim());
+      const item: Item = { name: parts[0] };
+      if (supportsQty && parts.length >= 2) {
+        const maybeNum = Number(parts[1]);
+        if (!Number.isNaN(maybeNum)) {
+          item.qty = maybeNum;
+          if (parts.length >= 3) item.notes = parts.slice(2).join(' | ');
+        } else if (supportsNotes) {
+          item.notes = parts.slice(1).join(' | ');
+        }
+      } else if (supportsNotes && parts.length >= 2) {
+        item.notes = parts.slice(1).join(' | ');
+      }
+      return item;
+    });
+  }
+
+  submit() {
+    this.error = null;
+    const v = this.validate();
+    if (v) { this.error = v; return; }
+
+    const roomSetup = this.parseLinesToStrings(this.roomSetupText);
+    const drapes = this.parseLinesToItems(this.drapesText, false, true);
+    const instruments = this.parseLinesToItems(this.instrumentsText);
+    const supplies = this.parseLinesToItems(this.suppliesText, true, false);
+    const medications = this.parseLinesToItems(this.medicationsText, false, true);
+    const sutures = this.parseLinesToItems(this.suturesText);
+    const dressings = this.parseLinesToItems(this.dressingsText);
+    const notes = this.parseLinesToStrings(this.notesText);
+
+    const payload: Omit<Procedure, 'id'> = {
+      name: (this.model.name ?? '').trim(),
+      service: (this.model.service ?? '').trim(),
+      position: (this.model.position ?? '').trim(),
+      anesthesia: (this.model.anesthesia ?? '').trim(),
+      roomSetup,
+      drapes,
+      instruments,
+      supplies,
+      medications,
+      sutures,
+      dressings,
+      notes,
+      tags: this.model.tags ?? []
+    };
+
+    this.saving = true;
+
+    const create$ = (this.svc as any).createProcedure
+      ? (this.svc as any).createProcedure(payload)
+      : (this.svc as any).addProcedure
+      ? (this.svc as any).addProcedure(payload)
+      : of(undefined);
+
+    create$.subscribe({
+      next: (created: any) => {
+        this.saving = false;
+        if (created && created.id) {
+          console.log('[AddProcedure] created, navigating to detail', created.id);
+          this.router.navigate(['/procedures', created.id]).catch(err => console.error('nav failed', err));
+        } else {
+          console.log('[AddProcedure] created (no id), navigating to list');
+          this.router.navigate(['/procedures']).catch(err => console.error('nav failed', err));
+        }
+      },
+      error: (err: any) => {
+        console.error('Create failed', err);
+        this.saving = false;
+        this.error = 'Failed to save — try again.';
+      }
+    });
+  }
+
+  // robust cancel that logs and reports navigation result
+  cancel() {
+    console.log('[AddProcedure] cancel() called — attempting navigation to /procedures');
+    // Use navigateByUrl which returns a Promise<boolean>
+    this.router.navigateByUrl('/procedures').then(result => {
+      console.log('[AddProcedure] navigateByUrl result:', result);
+      if (!result) {
+        console.warn('[AddProcedure] navigation returned false — check router guards or current route state');
+      }
+    }).catch(err => {
+      console.error('[AddProcedure] navigation error:', err);
+    });
+  }
+}
+*/
+
+// src/app/features/procedures/add-procedure/add-procedure.component.ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { ProceduresService } from '../../../core/services/procedures.service';
+import { Procedure, Item } from '../../../core/models/procedure.model';
+import { of } from 'rxjs';
+
+@Component({
+  selector: 'app-add-procedure',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './add-procedure.component.html',
+  styleUrls: ['./add-procedure.component.scss']
+})
+export class AddProcedureComponent {
+  model: Partial<Procedure> = {
+    name: '',
+    service: '',
+    position: '',
+    anesthesia: '',
+    tags: []
+  };
+
+  roomSetupText = '';
+  drapesText = '';
+  instrumentsText = '';
+  suppliesText = '';
+  medicationsText = '';
+  suturesText = '';
+  dressingsText = '';
+  notesText = '';
+
+  tagInput = '';
+  saving = false;
+  error: string | null = null;
+
+  constructor(private svc: ProceduresService, private router: Router) {}
+
+  addTag() {
+    const t = (this.tagInput ?? '').trim();
+    if (!t) return;
+    this.model.tags = Array.from(new Set([...(this.model.tags ?? []), t]));
+    this.tagInput = '';
+  }
+
+  removeTag(t: string) {
+    this.model.tags = (this.model.tags ?? []).filter(x => x !== t);
+  }
+
+  private validate(): string | null {
+    if (!this.model.name || !this.model.name.trim()) return 'Name is required';
+    if (!this.model.service || !this.model.service.trim()) return 'Service is required';
+    return null;
+  }
+
+  private parseLinesToStrings(text: string): string[] {
+    return (text ?? '').split('\n').map(s => s.trim()).filter(Boolean);
+  }
+
+  private parseLinesToItems(text: string, supportsQty = false, supportsNotes = false): Item[] {
+    return this.parseLinesToStrings(text).map(line => {
+      const parts = line.split('|').map(p => p.trim());
+      const item: Item = { name: parts[0] };
+      if (supportsQty && parts.length >= 2) {
+        const maybeNum = Number(parts[1]);
+        if (!Number.isNaN(maybeNum)) {
+          item.qty = maybeNum;
+          if (parts.length >= 3) item.notes = parts.slice(2).join(' | ');
+        } else if (supportsNotes) {
+          item.notes = parts.slice(1).join(' | ');
+        }
+      } else if (supportsNotes && parts.length >= 2) {
+        item.notes = parts.slice(1).join(' | ');
+      }
+      return item;
+    });
+  }
+
+  submit() {
+    this.error = null;
+    const v = this.validate();
+    if (v) { this.error = v; return; }
+
+    const roomSetup = this.parseLinesToStrings(this.roomSetupText);
+    const drapes = this.parseLinesToItems(this.drapesText, false, true);
+    const instruments = this.parseLinesToItems(this.instrumentsText);
+    const supplies = this.parseLinesToItems(this.suppliesText, true, false);
+    const medications = this.parseLinesToItems(this.medicationsText, false, true);
+    const sutures = this.parseLinesToItems(this.suturesText);
+    const dressings = this.parseLinesToItems(this.dressingsText);
+    const notes = this.parseLinesToStrings(this.notesText);
+
+    const payload: Omit<Procedure, 'id'> = {
+      name: (this.model.name ?? '').trim(),
+      service: (this.model.service ?? '').trim(),
+      position: (this.model.position ?? '').trim(),
+      anesthesia: (this.model.anesthesia ?? '').trim(),
+      roomSetup,
+      drapes,
+      instruments,
+      supplies,
+      medications,
+      sutures,
+      dressings,
+      notes,
+      tags: this.model.tags ?? []
+    };
+
+    this.saving = true;
+
+    const create$ = (this.svc as any).createProcedure
+      ? (this.svc as any).createProcedure(payload)
+      : (this.svc as any).addProcedure
+      ? (this.svc as any).addProcedure(payload)
+      : of(undefined);
+
+    create$.subscribe({
+      next: (created: any) => {
+        this.saving = false;
+        if (created && created.id) this.router.navigate(['/procedures', created.id]).catch(console.error);
+        else this.router.navigate(['/procedures']).catch(console.error);
+      },
+      error: (err: any) => {
+        console.error('Create failed', err);
+        this.saving = false;
+        this.error = 'Failed to save — try again.';
+      }
+    });
+  }
+
+  // Fallback click handler (kept, but routerLink in template will handle it)
+  cancel() {
+    this.router.navigateByUrl('/procedures').catch(console.error);
+  }
+}
