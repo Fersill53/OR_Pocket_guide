@@ -17,9 +17,11 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "docs",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "baseHref": "/OR_Pocket_guide",
             "assets": [
               "src/favicon.ico",
               "src/assets"
