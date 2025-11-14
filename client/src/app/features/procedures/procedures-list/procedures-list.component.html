@@ -1,3 +1,4 @@
+<!--
 <section class="list-page">
   <div class="toolbar">
     <h1>Procedures</h1>
@@ -34,5 +35,183 @@
         </div>
       </li>
     </ul>
+  </div>
+</section>
+
+
+<section class="list-page">
+  <div class="toolbar">
+    <div class="title-block">
+      <h1 class="page-title">Procedures</h1>
+      <p class="page-subtitle">
+        Quick-reference setups for common cases. Search by name, service, or tags.
+      </p>
+    </div>
+
+    <div class="toolbar-actions">
+      <div class="search-wrap">
+        <span class="search-icon">🔎</span>
+        <input
+          type="search"
+          placeholder="Search procedure, service, or tag…"
+          [(ngModel)]="q"
+          (ngModelChange)="onQuery($event)"
+        />
+        <button *ngIf="q" class="btn clear-btn" type="button" (click)="clear()">
+          ✕
+        </button>
+      </div>
+
+      <a class="btn primary" routerLink="/procedures/add">+ Add Procedure</a>
+    </div>
+  </div>
+
+  <!-- Loading state 
+  <div class="state state-loading" *ngIf="loading$ | async">
+    <div class="pulse-dot"></div>
+    <span>Loading procedures…</span>
+  </div>
+
+  <!-- Empty state 
+  <div class="state state-empty" *ngIf="(empty$ | async) && !(loading$ | async)">
+    <div class="state-card card">
+      <h2>No procedures yet</h2>
+      <p>
+        Start by creating your first procedure. You can add room setup, drapes,
+        instruments, and more.
+      </p>
+      <a class="btn primary" routerLink="/procedures/add">Create one now</a>
+    </div>
+  </div>
+
+  <!-- Results grid 
+  <div
+    class="grid"
+    *ngIf="!(empty$ | async) && !(loading$ | async)"
+  >
+    <a
+      class="proc-card card"
+      *ngFor="let p of (filtered$ | async) ?? []"
+      [routerLink]="['/procedures', p.id]"
+    >
+      <div class="proc-main">
+        <div class="proc-title-row">
+          <h2>{{ p.name }}</h2>
+          <span class="service-pill">{{ p.service }}</span>
+        </div>
+
+        <div class="meta-row">
+          <span *ngIf="p.position" class="chip">
+            🧍 {{ p.position }}
+          </span>
+          <span *ngIf="p.anesthesia" class="chip">
+            💉 {{ p.anesthesia }}
+          </span>
+        </div>
+
+        <p class="notes-preview" *ngIf="p.notes?.length">
+          {{ p.notes[0] }}
+          <span *ngIf="p.notes.length > 1"> · +{{ p.notes.length - 1 }} more</span>
+        </p>
+      </div>
+
+      <div class="tags-row" *ngIf="p.tags?.length">
+        <span class="tag-chip" *ngFor="let t of p.tags">
+          #{{ t }}
+        </span>
+      </div>
+    </a>
+  </div>
+</section>
+-->
+
+<!-- src/app/features/procedures/procedures-list/procedures-list.component.html -->
+<section class="list-page">
+  <div class="toolbar">
+    <div class="title-block">
+      <h1 class="page-title">Procedures</h1>
+      <p class="page-subtitle">
+        Quick-reference setups for common cases. Search by name, service, or tags.
+      </p>
+    </div>
+
+    <div class="toolbar-actions">
+      <div class="search-wrap">
+        <span class="search-icon">🔎</span>
+        <input
+          type="search"
+          placeholder="Search procedure, service, or tag…"
+          [(ngModel)]="q"
+          (ngModelChange)="onQuery($event)"
+        />
+        <button *ngIf="q" class="btn clear-btn" type="button" (click)="clear()">
+          ✕
+        </button>
+      </div>
+
+      <a class="btn primary" routerLink="/procedures/add">+ Add Procedure</a>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div class="state state-loading" *ngIf="loading$ | async">
+    <div class="pulse-dot"></div>
+    <span>Loading procedures…</span>
+  </div>
+
+  <!-- Empty state -->
+  <div class="state state-empty" *ngIf="(empty$ | async) && !(loading$ | async)">
+    <div class="state-card card">
+      <h2>No procedures yet</h2>
+      <p>
+        Start by creating your first procedure. You can add room setup, drapes,
+        instruments, and more.
+      </p>
+      <a class="btn primary" routerLink="/procedures/add">Create one now</a>
+    </div>
+  </div>
+
+  <!-- Results grid -->
+  <div
+    class="grid"
+    *ngIf="!(empty$ | async) && !(loading$ | async)"
+  >
+    <a
+      class="proc-card card"
+      *ngFor="let p of (filtered$ | async) ?? []"
+      [routerLink]="['/procedures', p.id]"
+    >
+      <div class="proc-main">
+        <div class="proc-title-row">
+          <h2>{{ p.name }}</h2>
+          <span class="service-pill">{{ p.service }}</span>
+        </div>
+
+        <div class="meta-row">
+          <span *ngIf="p.position" class="chip">
+            🧍 {{ p.position }}
+          </span>
+          <span *ngIf="p.anesthesia" class="chip">
+            💉 {{ p.anesthesia }}
+          </span>
+        </div>
+
+        <!-- SAFER NOTES BLOCK -->
+        <ng-container *ngIf="p.notes as notes">
+          <p class="notes-preview" *ngIf="notes.length">
+            {{ notes[0] }}
+            <span *ngIf="notes.length > 1">
+              · +{{ notes.length - 1 }} more
+            </span>
+          </p>
+        </ng-container>
+      </div>
+
+      <div class="tags-row" *ngIf="p.tags?.length">
+        <span class="tag-chip" *ngFor="let t of p.tags">
+          #{{ t }}
+        </span>
+      </div>
+    </a>
   </div>
 </section>
