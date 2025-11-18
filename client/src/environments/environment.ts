@@ -1,0 +1,6 @@
+//Dev
+
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000'  // json-server when running locally
+};
