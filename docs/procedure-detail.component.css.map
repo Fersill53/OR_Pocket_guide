@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/features/procedures/procedure-detail/procedure-detail.component.scss"],
-  "sourcesContent": [".detail-page { max-width:1100px; margin:0 auto; }\r\n.back { display:inline-block; margin-bottom:12px; text-decoration:none; color:var(--muted); }\r\nh1 { margin:0 0 6px 0; font-size:1.4rem; }\r\n.meta { color:var(--muted); margin-bottom:12px; }\r\n.grid { display:grid; gap:12px; grid-template-columns: repeat(auto-fill,minmax(320px,1fr)); }\r\n.panel { border:1px solid var(--muted-border); border-radius:10px; padding:12px; background:var(--card); }\r\n.panel h3 { margin:0 0 .5rem; font-size:1rem; }\r\n.loading { color:var(--muted); padding:20px 0; }\r\nsmall { color:var(--muted); }\r\n.edit-row { display:flex; gap:8px; align-items:center; margin-bottom:8px; }\r\n.edit-row input { flex:1; }\r\n"],
-  "mappings": ";AAAA,CAAA;AAAe,aAAA;AAAkB,UAAA,EAAA;;AACjC,CAAA;AAAQ,WAAA;AAAsB,iBAAA;AAAoB,mBAAA;AAAsB,SAAA,IAAA;;AACxE;AAAK,UAAA,EAAA,EAAA,IAAA;AAAkB,aAAA;;AACvB,CAAA;AAAQ,SAAA,IAAA;AAAoB,iBAAA;;AAC5B,CAAA;AAAQ,WAAA;AAAc,OAAA;AAAU,yBAAA,OAAA,SAAA,EAAA,OAAA,KAAA,EAAA;;AAChC,CAAA;AAAS,UAAA,IAAA,MAAA,IAAA;AAAsC,iBAAA;AAAoB,WAAA;AAAc,cAAA,IAAA;;AACjF,CADA,MACA;AAAY,UAAA,EAAA,EAAA;AAAkB,aAAA;;AAC9B,CAAA;AAAW,SAAA,IAAA;AAAoB,WAAA,KAAA;;AAC/B;AAAQ,SAAA,IAAA;;AACR,CAAA;AAAY,WAAA;AAAc,OAAA;AAAS,eAAA;AAAoB,iBAAA;;AACvD,CADA,SACA;AAAkB,QAAA;;",
-  "names": []
-}
