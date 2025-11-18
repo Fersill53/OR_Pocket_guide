@@ -10504,7 +10504,7 @@ function getOrCreateComponentTView(def) {
   }
   return tView;
 }
-function createLView(parentLView, tView, context2, flags, host, tHostNode, environment, renderer, injector, embeddedViewInjector, hydrationInfo) {
+function createLView(parentLView, tView, context2, flags, host, tHostNode, environment2, renderer, injector, embeddedViewInjector, hydrationInfo) {
   const lView = tView.blueprint.slice();
   lView[HOST] = host;
   lView[FLAGS] = flags | 4 | 128 | 8 | 64 | 1024;
@@ -10515,7 +10515,7 @@ function createLView(parentLView, tView, context2, flags, host, tHostNode, envir
   ngDevMode && tView.declTNode && parentLView && assertTNodeForLView(tView.declTNode, parentLView);
   lView[PARENT] = lView[DECLARATION_VIEW] = parentLView;
   lView[CONTEXT] = context2;
-  lView[ENVIRONMENT] = environment || parentLView && parentLView[ENVIRONMENT];
+  lView[ENVIRONMENT] = environment2 || parentLView && parentLView[ENVIRONMENT];
   ngDevMode && assertDefined(lView[ENVIRONMENT], "LViewEnvironment is required");
   lView[RENDERER] = renderer || parentLView && parentLView[RENDERER];
   ngDevMode && assertDefined(lView[RENDERER], "Renderer is required");
@@ -12038,8 +12038,8 @@ function markDirtyIfOnPush(lView, viewIndex) {
   }
 }
 function setNgReflectProperty(lView, tNode, attrName, value) {
-  const environment = lView[ENVIRONMENT];
-  if (!environment.ngReflect) {
+  const environment2 = lView[ENVIRONMENT];
+  if (!environment2.ngReflect) {
     return;
   }
   const element = getNativeByTNode(tNode, lView);
@@ -12058,8 +12058,8 @@ function setNgReflectProperty(lView, tNode, attrName, value) {
   }
 }
 function setNgReflectProperties(lView, tView, tNode, publicName, value) {
-  const environment = lView[ENVIRONMENT];
-  if (!environment.ngReflect || !(tNode.type & (3 | 4))) {
+  const environment2 = lView[ENVIRONMENT];
+  if (!environment2.ngReflect || !(tNode.type & (3 | 4))) {
     return;
   }
   const inputConfig = tNode.inputs?.[publicName];
@@ -12515,8 +12515,8 @@ function runEffectsInView(view) {
 }
 var MAXIMUM_REFRESH_RERUNS$1 = 100;
 function detectChangesInternal(lView, mode = 0) {
-  const environment = lView[ENVIRONMENT];
-  const rendererFactory = environment.rendererFactory;
+  const environment2 = lView[ENVIRONMENT];
+  const rendererFactory = environment2.rendererFactory;
   const checkNoChangesMode = !!ngDevMode && isInCheckNoChangesMode();
   if (!checkNoChangesMode) {
     rendererFactory.begin?.();
@@ -14858,11 +14858,11 @@ var ComponentFactory2 = class extends ComponentFactory$1 {
       ngDevMode && verifyNotAnOrphanComponent(cmpDef);
       const rootTView = createRootTView(rootSelectorOrNode, cmpDef, componentBindings, directives);
       const rootViewInjector = createRootViewInjector(cmpDef, environmentInjector || this.ngModule, injector);
-      const environment = createRootLViewEnvironment(rootViewInjector);
-      const hostRenderer = environment.rendererFactory.createRenderer(null, cmpDef);
+      const environment2 = createRootLViewEnvironment(rootViewInjector);
+      const hostRenderer = environment2.rendererFactory.createRenderer(null, cmpDef);
       const hostElement = rootSelectorOrNode ? locateHostElement(hostRenderer, rootSelectorOrNode, cmpDef.encapsulation, rootViewInjector) : createHostElement(cmpDef, hostRenderer);
       const hasInputBindings = componentBindings?.some(isInputBinding) || directives?.some((d) => typeof d !== "function" && d.bindings.some(isInputBinding));
-      const rootLView = createLView(null, rootTView, null, 512 | getInitialLViewFlagsFromDef(cmpDef), null, null, environment, hostRenderer, rootViewInjector, null, retrieveHydrationInfo(
+      const rootLView = createLView(null, rootTView, null, 512 | getInitialLViewFlagsFromDef(cmpDef), null, null, environment2, hostRenderer, rootViewInjector, null, retrieveHydrationInfo(
         hostElement,
         rootViewInjector,
         true
@@ -48555,32 +48555,79 @@ var ReactiveFormsModule = class _ReactiveFormsModule {
   }], null, null);
 })();
 
+// src/environments/environment.ts
+var environment = {
+  production: false,
+  apiUrl: "http://localhost:3000"
+  // json-server when running locally
+};
+
 // src/app/core/services/procedures.service.ts
 var ProceduresService = class _ProceduresService {
   http;
-  baseUrl = "http://localhost:3000";
-  // Change if needed
+  // Only used in development (localhost)
+  baseUrl = environment.apiUrl;
   constructor(http) {
     this.http = http;
   }
-  // ✅ GET all procedures
+  /**
+   * Get all procedures
+   * - DEV: from json-server (http://localhost:3000/procedures)
+   * - PROD (GitHub Pages): from static assets/procedures.json (read-only)
+   */
   getAll() {
+    if (environment.production) {
+      return this.http.get("assets/procedures.json");
+    }
     return this.http.get(`${this.baseUrl}/procedures`);
   }
-  // ✅ GET one procedure by id
+  /**
+   * Get single procedure by id
+   * In prod we just filter the list from assets.
+   */
   getById(id) {
+    if (environment.production) {
+      return this.getAll().pipe(map((list) => list.find((p) => p.id === id)));
+    }
     return this.http.get(`${this.baseUrl}/procedures/${id}`);
   }
-  // ✅ POST create new procedure
+  /**
+   * Create a procedure
+   * - DEV: POST to json-server
+   * - PROD: no real backend; return error observable so we can show a message or ignore
+   */
   createProcedure(proc) {
+    if (environment.production) {
+      console.warn("Create is disabled in production (GitHub Pages).");
+      return throwError(() => new Error("Create is disabled in production."));
+    }
     return this.http.post(`${this.baseUrl}/procedures`, proc);
   }
-  // ✅ PUT update existing procedure
+  /**
+   * Update a procedure
+   * - DEV: PUT to json-server
+   * - PROD: disabled (no backend)
+   */
   updateProcedure(proc) {
+    if (!proc.id) {
+      return throwError(() => new Error("Procedure id is required."));
+    }
+    if (environment.production) {
+      console.warn("Update is disabled in production (GitHub Pages).");
+      return throwError(() => new Error("Update is disabled in production."));
+    }
     return this.http.put(`${this.baseUrl}/procedures/${proc.id}`, proc);
   }
-  // ✅ DELETE procedure
+  /**
+   * Delete a procedure
+   * - DEV: DELETE to json-server
+   * - PROD: disabled (no backend)
+   */
   deleteProcedure(id) {
+    if (environment.production) {
+      console.warn("Delete is disabled in production (GitHub Pages).");
+      return throwError(() => new Error("Delete is disabled in production."));
+    }
     return this.http.delete(`${this.baseUrl}/procedures/${id}`);
   }
   static \u0275fac = function ProceduresService_Factory(__ngFactoryType__) {
