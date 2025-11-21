@@ -308,7 +308,7 @@ export class ProceduresService {
     return this.http.delete<void>(`${this.baseUrl}/procedures/${id}`);
   }
 }
-*/
+
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -329,7 +329,7 @@ export class ProceduresService {
    * Get all procedures
    * - DEV: from json-server (http://localhost:3000/procedures)
    * - PROD: from static assets/procedures.json (read-only)
-   */
+   *
   getAll(): Observable<Procedure[]> {
     if (environment.production) {
       // GitHub Pages: read from bundled JSON
@@ -337,6 +337,102 @@ export class ProceduresService {
     }
 
     // Local dev: json-server
+    return this.http.get<Procedure[]>(`${this.baseUrl}/procedures`);
+  }
+
+  /**
+   * Get single procedure by id.
+   * In prod we just filter the list from assets.
+   *
+  getById(id: string): Observable<Procedure | undefined> {
+    if (environment.production) {
+      return this.getAll().pipe(
+        map(list => list.find(p => p.id === id))
+      );
+    }
+
+    return this.http.get<Procedure>(`${this.baseUrl}/procedures/${id}`);
+  }
+
+  /**
+   * Create a procedure
+   * - DEV: POST to json-server
+   * - PROD: no backend → fail politely
+   *
+  createProcedure(proc: Procedure): Observable<Procedure> {
+    if (environment.production) {
+      console.warn('Create is disabled in production (GitHub Pages).');
+      return throwError(() => new Error('Create is disabled in production.'));
+    }
+
+    return this.http.post<Procedure>(`${this.baseUrl}/procedures`, proc);
+  }
+
+  /**
+   * Update a procedure
+   * - DEV: PUT to json-server
+   * - PROD: disabled
+   *
+  updateProcedure(proc: Procedure): Observable<Procedure> {
+    if (!proc.id) {
+      return throwError(() => new Error('Procedure id is required.'));
+    }
+
+    if (environment.production) {
+      console.warn('Update is disabled in production (GitHub Pages).');
+      return throwError(() => new Error('Update is disabled in production.'));
+    }
+
+    return this.http.put<Procedure>(
+      `${this.baseUrl}/procedures/${proc.id}`,
+      proc
+    );
+  }
+
+  /**
+   * Delete a procedure
+   * - DEV: DELETE to json-server
+   * - PROD: disabled
+   *
+  deleteProcedure(id: string): Observable<void> {
+    if (environment.production) {
+      console.warn('Delete is disabled in production (GitHub Pages).');
+      return throwError(() => new Error('Delete is disabled in production.'));
+    }
+
+    return this.http.delete<void>(`${this.baseUrl}/procedures/${id}`);
+  }
+}
+*/
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map, throwError } from 'rxjs';
+import { Procedure } from '../models/procedure.model';
+import { environment } from '../../../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProceduresService {
+  // In dev: 'http://localhost:3000/api'
+  // In prod: '' (unused, we go to assets)
+  private readonly baseUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) {}
+
+  /**
+   * Get all procedures
+   * - DEV: from Express API (http://localhost:3000/api/procedures)
+   * - PROD: from static assets/procedures.json (read-only)
+   */
+  getAll(): Observable<Procedure[]> {
+    if (environment.production) {
+      // GitHub Pages: read from bundled JSON
+      return this.http.get<Procedure[]>('assets/procedures.json');
+    }
+
+    // Local dev: Express + MongoDB Atlas
     return this.http.get<Procedure[]>(`${this.baseUrl}/procedures`);
   }
 
@@ -356,8 +452,8 @@ export class ProceduresService {
 
   /**
    * Create a procedure
-   * - DEV: POST to json-server
-   * - PROD: no backend → fail politely
+   * - DEV: POST to Express API
+   * - PROD: disabled (no backend on GitHub Pages)
    */
   createProcedure(proc: Procedure): Observable<Procedure> {
     if (environment.production) {
@@ -370,7 +466,7 @@ export class ProceduresService {
 
   /**
    * Update a procedure
-   * - DEV: PUT to json-server
+   * - DEV: PUT to Express API
    * - PROD: disabled
    */
   updateProcedure(proc: Procedure): Observable<Procedure> {
@@ -391,7 +487,7 @@ export class ProceduresService {
 
   /**
    * Delete a procedure
-   * - DEV: DELETE to json-server
+   * - DEV: DELETE to Express API
    * - PROD: disabled
    */
   deleteProcedure(id: string): Observable<void> {
