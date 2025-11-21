@@ -1,4 +1,5 @@
 // server/src/models/procedure.model.js
+/*
 const mongoose = require('mongoose');
 
 const instrumentSchema = new mongoose.Schema(
@@ -43,6 +44,82 @@ const procedureSchema = new mongoose.Schema(
     tags: [{ type: String }],
 
     // Text / array fields you already use
+    roomSetup: [{ type: String }],
+    drapes: [{ type: String }],
+    dressings: [{ type: String }],
+    notes: [{ type: String }],
+
+    instruments: [instrumentSchema],
+    supplies: [supplySchema],
+    medications: [medicationSchema],
+    sutures: [sutureSchema]
+  },
+  {
+    timestamps: true
+  }
+);
+
+// Transform _id -> id for frontend compatibility
+procedureSchema.set('toJSON', {
+  virtuals: true,
+  transform: (doc, ret) => {
+    ret.id = ret._id.toString();
+    delete ret._id;
+    delete ret.__v;
+  }
+});
+
+const Procedure = mongoose.model('Procedure', procedureSchema);
+
+module.exports = Procedure;
+*/
+
+// server/src/models/procedure.model.js
+const mongoose = require('mongoose');
+
+const instrumentSchema = new mongoose.Schema(
+  {
+    name: { type: String },   // no longer required: true
+    notes: { type: String }
+  },
+  { _id: false }
+);
+
+const supplySchema = new mongoose.Schema(
+  {
+    name: { type: String },
+    notes: { type: String }
+  },
+  { _id: false }
+);
+
+const medicationSchema = new mongoose.Schema(
+  {
+    name: { type: String },
+    dose: { type: String },
+    route: { type: String },
+    notes: { type: String }
+  },
+  { _id: false }
+);
+
+const sutureSchema = new mongoose.Schema(
+  {
+    name: { type: String },
+    size: { type: String },
+    notes: { type: String }
+  },
+  { _id: false }
+);
+
+const procedureSchema = new mongoose.Schema(
+  {
+    // keep these, but make them optional at DB layer to avoid 400s
+    name: { type: String },
+    service: { type: String },
+
+    tags: [{ type: String }],
+
     roomSetup: [{ type: String }],
     drapes: [{ type: String }],
     dressings: [{ type: String }],
