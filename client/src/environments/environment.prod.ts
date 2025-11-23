@@ -2,5 +2,5 @@
 
 export const environment = {
   production: true,
-  apiUrl: '' // not used in prod; we’ll hit assets instead
+  apiUrl: 'https://or-guide-api.onrender.com/api' // render URL
 };
