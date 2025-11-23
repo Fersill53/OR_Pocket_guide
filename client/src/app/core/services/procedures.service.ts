@@ -500,6 +500,50 @@ export class ProceduresService {
     return this.http.delete<void>(`${this.baseUrl}/procedures/${id}`);
   }
 }
+*
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { Procedure } from '../models/procedure.model';
+import { environment } from '../../../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProceduresService {
+  // Dev:  http://localhost:3000/api
+  // Prod: https://or-guide-api.onrender.com/api
+  private readonly baseUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) {}
+
+  getAll(): Observable<Procedure[]> {
+    return this.http.get<Procedure[]>(`${this.baseUrl}/procedures`);
+  }
+
+  getById(id: string): Observable<Procedure> {
+    return this.http.get<Procedure>(`${this.baseUrl}/procedures/${id}`);
+  }
+
+  createProcedure(proc: Procedure): Observable<Procedure> {
+    return this.http.post<Procedure>(`${this.baseUrl}/procedures`, proc);
+  }
+
+  updateProcedure(proc: Procedure): Observable<Procedure> {
+    if (!proc.id) {
+      return throwError(() => new Error('Procedure id is required.'));
+    }
+    return this.http.put<Procedure>(
+      `${this.baseUrl}/procedures/${proc.id}`,
+      proc
+    );
+  }
+
+  deleteProcedure(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/procedures/${id}`);
+  }
+}
 */
 
 import { Injectable } from '@angular/core';
