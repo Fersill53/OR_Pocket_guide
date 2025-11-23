@@ -129,7 +129,7 @@ mongoose
     console.error('❌ Failed to connect to MongoDB', err);
     process.exit(1);
   });
-*/
+*
 
 // server/src/index.js
 const express = require('express');
@@ -186,6 +186,77 @@ app.get('/', (req, res) => {
 });
 
 // Routes
+app.use('/api/procedures', proceduresRouter);
+
+// MongoDB connection
+const PORT = process.env.PORT || 3000;
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error('❌ MONGODB_URI is not set in .env');
+  process.exit(1);
+}
+
+mongoose.set('strictQuery', true);
+
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log('✅ Connected to MongoDB Atlas');
+    app.listen(PORT, () => {
+      console.log(`🚀 Server listening on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('❌ Failed to connect to MongoDB', err);
+    process.exit(1);
+  });
+*/
+
+// server/src/index.js
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const morgan = require('morgan');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const proceduresRouter = require('./routes/procedures.routes');
+
+const app = express();
+
+// ----- VERY OPEN CORS (for now) -----
+app.use(cors()); // allow all origins by default
+
+// Make sure even error responses have CORS headers
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  res.header(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, PATCH, DELETE, OPTIONS'
+  );
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
+// ------------------------------------
+
+// Logging & JSON parsing
+app.use(morgan('dev'));
+app.use(express.json());
+
+// Health check
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'OR Pocket Guide API is running' });
+});
+
+// API routes
 app.use('/api/procedures', proceduresRouter);
 
 // MongoDB connection
