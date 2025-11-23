@@ -2,5 +2,5 @@
 
 export const environment = {
   production: true,
-  apiUrl: 'https://or-guide-api.onrender.com' // render backend URL
+  apiUrl: 'https://or-pocket-guide.onrender.com' // render backend URL
 };
