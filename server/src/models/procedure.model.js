@@ -148,7 +148,7 @@ procedureSchema.set('toJSON', {
 const Procedure = mongoose.model('Procedure', procedureSchema);
 
 module.exports = Procedure;
-*/
+*
 
 // server/src/models/procedure.model.js
 const mongoose = require('mongoose');
@@ -204,6 +204,65 @@ const ProcedureSchema = new mongoose.Schema(
   {
     timestamps: true,
     strict: false // allow extra fields without breaking
+  }
+);
+
+module.exports = mongoose.model('Procedure', ProcedureSchema);
+*/
+
+// server/src/models/procedure.model.js
+const mongoose = require('mongoose');
+
+const InstrumentSchema = new mongoose.Schema(
+  {
+    name: { type: String } // not required
+  },
+  { _id: false }
+);
+
+const SupplySchema = new mongoose.Schema(
+  {
+    name: { type: String }
+  },
+  { _id: false }
+);
+
+const MedicationSchema = new mongoose.Schema(
+  {
+    name: { type: String },
+    dose: { type: String },
+    route: { type: String }
+  },
+  { _id: false }
+);
+
+const SutureSchema = new mongoose.Schema(
+  {
+    name: { type: String },
+    size: { type: String }
+  },
+  { _id: false }
+);
+
+const ProcedureSchema = new mongoose.Schema(
+  {
+    // Everything optional so saves don't fail
+    name: { type: String },
+    service: { type: String },
+    position: { type: String },
+    roomSetup: [{ type: String }],
+    drapes: [{ type: String }],
+    instruments: [InstrumentSchema],
+    supplies: [SupplySchema],
+    medications: [MedicationSchema],
+    sutures: [SutureSchema],
+    dressings: [{ type: String }],
+    notes: [{ type: String }],
+    tags: [{ type: String }]
+  },
+  {
+    timestamps: true,
+    strict: false // allow extra fields from frontend without error
   }
 );
 
