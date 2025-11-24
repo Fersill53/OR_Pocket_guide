@@ -276,6 +276,8 @@ module.exports = router;
 // server/src/routes/procedures.routes.js
 const express = require('express');
 const Procedure = require('../models/procedure.model');
+const mongoose = require('mongoose');
+const { isValidObjectId } = mongoose;
 
 const router = express.Router();
 

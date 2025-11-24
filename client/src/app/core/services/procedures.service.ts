@@ -587,7 +587,7 @@ export class ProceduresService {
   deleteProcedure(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/procedures/${id}`);
   }
-}*/
+}*
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -629,6 +629,86 @@ export class ProceduresService {
     );
   }
 
+  deleteProcedure(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/api/procedures/${id}`);
+  }
+}
+*/
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Procedure } from '../models/procedure.model';
+import { environment } from '../../../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProceduresService {
+  // Dev:  http://localhost:3000
+  // Prod: https://or-pocket-guide.onrender.com
+  private readonly baseUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) {}
+
+  /**
+   * Ensure every procedure has `id` populated from `_id` if needed.
+   */
+  private normalize(raw: any): Procedure {
+    return {
+      ...raw,
+      id: raw.id ?? raw._id // prefer id, fall back to _id
+    } as Procedure;
+  }
+
+  /**
+   * GET /api/procedures
+   */
+  getAll(): Observable<Procedure[]> {
+    return this.http
+      .get<any[]>(`${this.baseUrl}/api/procedures`)
+      .pipe(map(list => list.map(r => this.normalize(r))));
+  }
+
+  /**
+   * GET /api/procedures/:id
+   */
+  getById(id: string): Observable<Procedure> {
+    return this.http
+      .get<any>(`${this.baseUrl}/api/procedures/${id}`)
+      .pipe(map(raw => this.normalize(raw)));
+  }
+
+  /**
+   * POST /api/procedures
+   */
+  createProcedure(proc: Procedure): Observable<Procedure> {
+    return this.http
+      .post<any>(`${this.baseUrl}/api/procedures`, proc)
+      .pipe(map(raw => this.normalize(raw)));
+  }
+
+  /**
+   * PUT /api/procedures/:id
+   */
+  updateProcedure(proc: Procedure): Observable<Procedure> {
+    const id = (proc as any).id ?? (proc as any)._id;
+
+    if (!id) {
+      return throwError(
+        () => new Error('Procedure id is required for update.')
+      );
+    }
+
+    return this.http
+      .put<any>(`${this.baseUrl}/api/procedures/${id}`, proc)
+      .pipe(map(raw => this.normalize(raw)));
+  }
+
+  /**
+   * DELETE /api/procedures/:id
+   */
   deleteProcedure(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/api/procedures/${id}`);
   }
