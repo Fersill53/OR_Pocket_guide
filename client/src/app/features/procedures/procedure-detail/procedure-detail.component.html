@@ -167,6 +167,322 @@
 </div>
 -->
 
+<!-- If procedure exists --
+<div class="page" *ngIf="procedure$ | async as p; else notFound">
+
+  <!-- HEADER: title + actions --
+  <header class="page-header">
+    <div class="title-block">
+      <h1>{{ p.name }}</h1>
+      <p class="subtitle">
+        <strong>Service:</strong> {{ p.service }}
+        <span *ngIf="p.position"> · <strong>Position:</strong> {{ p.position }}</span>
+      </p>
+
+      <div class="tags" *ngIf="p.tags?.length">
+        <span class="tag" *ngFor="let t of p.tags">{{ t }}</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <!-- View mode actions --
+      <button
+        class="btn primary"
+        *ngIf="!editMode"
+        (click)="startEdit(p)">
+        Edit
+      </button>
+
+      <!-- Edit mode actions --
+      <ng-container *ngIf="editMode && editable as e">
+        <button class="btn primary" (click)="saveEdit()">
+          Save
+        </button>
+        <button class="btn" (click)="cancelEdit()">
+          Cancel
+        </button>
+      </ng-container>
+
+      <!-- Delete always available when we have a procedure -
+      <button
+        class="btn danger"
+        (click)="confirmDelete(p)">
+        Delete
+      </button>
+
+      <button class="btn" routerLink="/procedures">
+        Back
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== VIEW MODE (read-only squares) ===== -
+  <div class="panel-grid" *ngIf="!editMode">
+
+    <!-- Room Setup -
+    <section class="panel" *ngIf="p.roomSetup?.length">
+      <h2>Room Setup</h2>
+      <ul>
+        <li *ngFor="let item of p.roomSetup">{{ item }}</li>
+      </ul>
+    </section>
+
+    <!-- Drapes -
+    <section class="panel" *ngIf="p.drapes?.length">
+      <h2>Drapes</h2>
+      <ul>
+        <li *ngFor="let item of p.drapes">{{ item }}</li>
+      </ul>
+    </section>
+
+    <!-- Instruments -
+    <section class="panel" *ngIf="p.instruments?.length">
+      <h2>Instruments</h2>
+      <ul>
+        <li *ngFor="let inst of p.instruments">
+          {{ inst.name }}
+        </li>
+      </ul>
+    </section>
+
+    <!-- Supplies -
+    <section class="panel" *ngIf="p.supplies?.length">
+      <h2>Supplies</h2>
+      <ul>
+        <li *ngFor="let s of p.supplies">
+          {{ s.name }}
+        </li>
+      </ul>
+    </section>
+
+    <!-- Medications --
+    <section class="panel" *ngIf="p.medications?.length">
+      <h2>Medications</h2>
+      <ul>
+        <li *ngFor="let m of p.medications">
+          <strong>{{ m.name }}</strong>
+          <span *ngIf="m.dose"> · {{ m.dose }}</span>
+          <span *ngIf="m.route"> · {{ m.route }}</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Sutures -
+    <section class="panel" *ngIf="p.sutures?.length">
+      <h2>Sutures</h2>
+      <ul>
+        <li *ngFor="let s of p.sutures">
+          <strong>{{ s.name }}</strong>
+          <span *ngIf="s.size"> · {{ s.size }}</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Dressings -
+    <section class="panel" *ngIf="p.dressings?.length">
+      <h2>Dressings</h2>
+      <ul>
+        <li *ngFor="let d of p.dressings">
+          {{ d }}
+        </li>
+      </ul>
+    </section>
+
+    <!-- Notes -
+    <section class="panel" *ngIf="p.notes?.length">
+      <h2>Notes</h2>
+      <ul>
+        <li *ngFor="let n of p.notes">
+          {{ n }}
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- ===== EDIT MODE (inline editable squares) ===== -
+  <div class="panel-grid" *ngIf="editMode && editable as e">
+
+    <!-- Core Info -
+    <section class="panel">
+      <h2>Core Info</h2>
+      <label>
+        Name
+        <input
+          type="text"
+          [(ngModel)]="e.name"
+          name="name" />
+      </label>
+
+      <label>
+        Service
+        <input
+          type="text"
+          [(ngModel)]="e.service"
+          name="service" />
+      </label>
+
+      <label>
+        Position
+        <input
+          type="text"
+          [(ngModel)]="e.position"
+          name="position" />
+      </label>
+
+      <label>
+        Tags (comma separated)
+        <input
+          type="text"
+          [ngModel]="e.tags?.join(', ')"
+          (ngModelChange)="e.tags = ($event || '').split(',').map(t => t.trim()).filter(Boolean)"
+          name="tagsText" />
+      </label>
+    </section>
+
+    <!-- Room Setup --
+    <section class="panel">
+      <h2>Room Setup</h2>
+      <textarea
+        rows="4"
+        [ngModel]="e.roomSetup?.join('\n')"
+        (ngModelChange)="e.roomSetup = ($event || '').split('\n').map(l => l.trim()).filter(Boolean)"
+        name="roomSetupText"></textarea>
+    </section>
+
+    <!-- Drapes -
+    <section class="panel">
+      <h2>Drapes</h2>
+      <textarea
+        rows="4"
+        [ngModel]="e.drapes?.join('\n')"
+        (ngModelChange)="e.drapes = ($event || '').split('\n').map(l => l.trim()).filter(Boolean)"
+        name="drapesText"></textarea>
+    </section>
+
+    <!-- Instruments -
+    <section class="panel">
+      <h2>Instruments</h2>
+      <ul>
+        <li *ngFor="let inst of asArray(e.instruments); let i = index">
+          <input
+            type="text"
+            [(ngModel)]="inst.name"
+            [name]="'instrument_' + i" />
+        </li>
+      </ul>
+      <button
+        type="button"
+        class="btn small"
+        (click)="(e.instruments = e.instruments || []).push({ name: 'New instrument' })">
+        + Add Instrument
+      </button>
+    </section>
+
+    <!-- Supplies -
+    <section class="panel">
+      <h2>Supplies</h2>
+      <ul>
+        <li *ngFor="let s of asArray(e.supplies); let i = index">
+          <input
+            type="text"
+            [(ngModel)]="s.name"
+            [name]="'supply_' + i" />
+        </li>
+      </ul>
+      <button
+        type="button"
+        class="btn small"
+        (click)="(e.supplies = e.supplies || []).push({ name: 'New supply' })">
+        + Add Supply
+      </button>
+    </section>
+
+    <!-- Medications -
+    <section class="panel">
+      <h2>Medications</h2>
+      <div
+        class="row"
+        *ngFor="let m of asArray(e.medications); let i = index">
+        <input
+          type="text"
+          placeholder="Name"
+          [(ngModel)]="m.name"
+          [name]="'med_name_' + i" />
+        <input
+          type="text"
+          placeholder="Dose"
+          [(ngModel)]="m.dose"
+          [name]="'med_dose_' + i" />
+        <input
+          type="text"
+          placeholder="Route"
+          [(ngModel)]="m.route"
+          [name]="'med_route_' + i" />
+      </div>
+      <button
+        type="button"
+        class="btn small"
+        (click)="(e.medications = e.medications || []).push({ name: 'New med', dose: '', route: '' })">
+        + Add Medication
+      </button>
+    </section>
+
+    <!-- Sutures -
+    <section class="panel">
+      <h2>Sutures</h2>
+      <div
+        class="row"
+        *ngFor="let s of asArray(e.sutures); let i = index">
+        <input
+          type="text"
+          placeholder="Name"
+          [(ngModel)]="s.name"
+          [name]="'suture_name_' + i" />
+        <input
+          type="text"
+          placeholder="Size"
+          [(ngModel)]="s.size"
+          [name]="'suture_size_' + i" />
+      </div>
+      <button
+        type="button"
+        class="btn small"
+        (click)="(e.sutures = e.sutures || []).push({ name: 'New suture', size: '' })">
+        + Add Suture
+      </button>
+    </section>
+
+    <!-- Dressings -
+    <section class="panel">
+      <h2>Dressings</h2>
+      <textarea
+        rows="4"
+        [ngModel]="e.dressings?.join('\n')"
+        (ngModelChange)="e.dressings = ($event || '').split('\n').map(l => l.trim()).filter(Boolean)"
+        name="dressingsText"></textarea>
+    </section>
+
+    <!-- Notes -
+    <section class="panel">
+      <h2>Notes</h2>
+      <textarea
+        rows="4"
+        [ngModel]="e.notes?.join('\n')"
+        (ngModelChange)="e.notes = ($event || '').split('\n').map(l => l.trim()).filter(Boolean)"
+        name="notesText"></textarea>
+    </section>
+  </div>
+</div>
+
+<!-- If procedure is missing -
+<ng-template #notFound>
+  <div class="page empty">
+    <p>Procedure not found.</p>
+    <button class="btn" routerLink="/procedures">Back to list</button>
+  </div>
+</ng-template>
+-->
+
 <!-- If procedure exists -->
 <div class="page" *ngIf="procedure$ | async as p; else notFound">
 
@@ -203,7 +519,7 @@
         </button>
       </ng-container>
 
-      <!-- Delete always available when we have a procedure -->
+      <!-- Delete always available -->
       <button
         class="btn danger"
         (click)="confirmDelete(p)">
@@ -334,7 +650,7 @@
         <input
           type="text"
           [ngModel]="e.tags?.join(', ')"
-          (ngModelChange)="e.tags = ($event || '').split(',').map(t => t.trim()).filter(Boolean)"
+          (ngModelChange)="onTagsChange($event, e)"
           name="tagsText" />
       </label>
     </section>
@@ -345,7 +661,7 @@
       <textarea
         rows="4"
         [ngModel]="e.roomSetup?.join('\n')"
-        (ngModelChange)="e.roomSetup = ($event || '').split('\n').map(l => l.trim()).filter(Boolean)"
+        (ngModelChange)="onLinesChange('roomSetup', $event, e)"
         name="roomSetupText"></textarea>
     </section>
 
@@ -355,7 +671,7 @@
       <textarea
         rows="4"
         [ngModel]="e.drapes?.join('\n')"
-        (ngModelChange)="e.drapes = ($event || '').split('\n').map(l => l.trim()).filter(Boolean)"
+        (ngModelChange)="onLinesChange('drapes', $event, e)"
         name="drapesText"></textarea>
     </section>
 
@@ -458,7 +774,7 @@
       <textarea
         rows="4"
         [ngModel]="e.dressings?.join('\n')"
-        (ngModelChange)="e.dressings = ($event || '').split('\n').map(l => l.trim()).filter(Boolean)"
+        (ngModelChange)="onLinesChange('dressings', $event, e)"
         name="dressingsText"></textarea>
     </section>
 
@@ -468,7 +784,7 @@
       <textarea
         rows="4"
         [ngModel]="e.notes?.join('\n')"
-        (ngModelChange)="e.notes = ($event || '').split('\n').map(l => l.trim()).filter(Boolean)"
+        (ngModelChange)="onLinesChange('notes', $event, e)"
         name="notesText"></textarea>
     </section>
   </div>
@@ -481,3 +797,4 @@
     <button class="btn" routerLink="/procedures">Back to list</button>
   </div>
 </ng-template>
+

@@ -785,8 +785,8 @@ export class AddProcedureComponent {
     });
   }
 }
-*/
-
+*
+BELOW IS THE LAST WORKING VERSION BEFORE CHAT FUCKED IT UP
 // src/app/features/procedures/add-procedure/add-procedure.component.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -922,5 +922,126 @@ export class AddProcedureComponent {
   // Fallback click handler (kept, but routerLink in template will handle it)
   cancel() {
     this.router.navigateByUrl('/procedures').catch(console.error);
+  }
+}
+*/
+
+import { Component } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { RouterModule, Router } from "@angular/router";
+import { ProceduresService } from "../../../core/services/procedures.service";
+import { Procedure, Item } from "../../../core/models/procedure.model";
+import { finalize } from "rxjs/operators";
+
+@Component({
+  selector: 'app-add-procedure',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './add-procedure.component.html',
+  styleUrls: ['./add-procedure.component.scss']
+})
+export class AddProcedureComponent {
+
+  // Base model - we keep arrays as empty by default
+  model: Partial<Procedure> = {
+    name: '',
+    service: '',
+    position: '',
+    anesthesia: '',
+    tags: [],
+    roomSetup: [],
+    drapes: [],
+    instruments: [],
+    supplies: [],
+    medications: [],
+    sutures: [],
+    dressings: [],
+    notes: []
+  };
+
+  // Text versions for multi-line / comma-separated inputs
+  tagsText = '';
+  roomSetupText = '';
+  drapesText = '';
+  instrumentsText = '';
+  suppliesText = '';
+  medicationsText = '';
+  suturesText = '';
+  dressingsText = '';
+  notesText = '';
+
+  saving = false;
+  error = '';
+
+  constructor(
+    private svc: ProceduresService,
+    private router: Router
+  ) {}
+
+  private toLines(text: string | null | undefined): string[] {
+    return (text || '')
+      .split('\n')
+      .map(l => l.trim())
+      .filter(l => !!l);
+  }
+
+  private toTags(text: string | null | undefined): string[] {
+    return (text || '')
+      .split(',')
+      .map(t => t.trim())
+      .filter(t => !!t);
+  }
+
+  private itemsFromLines(text: string | null | undefined): Item[] {
+    const lines = this.toLines(text);
+    return lines.map(line => ({ name: line }));
+  }
+
+  submit() {
+    this.error = '';
+
+    if (!this.model.name || !this.model.service) {
+      this.error = 'Name and Service are required.';
+      return;
+    }
+
+    this.saving = true;
+
+    const payload: Omit<Procedure, 'id' | '_id'> = {
+      name: (this.model.name || '').trim(),
+      service: (this.model.service || '').trim(),
+      position: (this.model.position || '').trim() || undefined,
+      anesthesia: (this.model.anesthesia || '').trim() || undefined,
+
+      tags: this.toTags(this.tagsText),
+
+      roomSetup: this.toLines(this.roomSetupText),
+      drapes: this.toLines(this.drapesText),
+
+      instruments: this.itemsFromLines(this.instrumentsText),
+      supplies: this.itemsFromLines(this.suppliesText),
+      medications: this.itemsFromLines(this.medicationsText),
+      sutures: this.itemsFromLines(this.suturesText),
+
+      dressings: this.toLines(this.dressingsText),
+      notes: this.toLines(this.notesText)
+    };
+
+    this.svc.createProcedure(payload as Procedure)
+      .pipe(finalize(() => this.saving = false))
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/procedures']);
+        },
+        error: err => {
+          console.error('Create failed', err);
+          this.error = 'Error creating procedure.';
+        }
+      });
+  }
+
+  cancel() {
+    this.router.navigate(['/procedures']);
   }
 }

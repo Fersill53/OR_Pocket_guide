@@ -257,8 +257,8 @@ WORKING
     </p>
   </form>
 </section>
--->
-
+--
+LAST WORKING VERSION BELOW
 <section class="add-page">
   <h1>Add Procedure</h1>
 
@@ -351,12 +351,181 @@ WORKING
     <div class="actions">
       <button class="btn primary" type="submit" [disabled]="saving">Create Procedure</button>
 
-      <!-- Use routerLink for guaranteed navigation -->
+      <!-- Use routerLink for guaranteed navigation --
       <a class="btn" routerLink="/procedures" role="button">Cancel</a>
-      <!-- (click) fallback still present on TS side, but this anchor will handle it -->
+      <!-- (click) fallback still present on TS side, but this anchor will handle it --
     </div>
 
     <p class="hint">Tip: use "Name | 2" for supplies (qty) or "Name | Per surgeon" for medication notes.</p>
   </form>
 </section>
+-->
+
+<div class="page">
+  <header class="page-header">
+    <div class="title-block">
+      <h1>Add Procedure</h1>
+      <p class="subtitle">
+        Create a new OR setup reference entry.
+      </p>
+    </div>
+
+    <div class="actions">
+      <button class="btn" (click)="cancel()">Cancel</button>
+      <button
+        class="btn primary"
+        type="submit"
+        form="addProcedureForm"
+        [disabled]="saving">
+        {{ saving ? 'Saving…' : 'Create' }}
+      </button>
+    </div>
+  </header>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <form
+    id="addProcedureForm"
+    (ngSubmit)="submit()"
+    autocomplete="off">
+
+    <div class="panel-grid">
+
+      <!-- Core Info -->
+      <section class="panel">
+        <h2>Core Info</h2>
+
+        <label>
+          Name *
+          <input
+            name="name"
+            required
+            [(ngModel)]="model.name" />
+        </label>
+
+        <label>
+          Service *
+          <input
+            name="service"
+            required
+            [(ngModel)]="model.service" />
+        </label>
+
+        <label>
+          Position
+          <input
+            name="position"
+            [(ngModel)]="model.position" />
+        </label>
+
+        <label>
+          Anesthesia
+          <input
+            name="anesthesia"
+            [(ngModel)]="model.anesthesia" />
+        </label>
+
+        <label>
+          Tags (comma separated)
+          <input
+            name="tagsText"
+            [(ngModel)]="tagsText"
+            placeholder="ortho, spine, general" />
+        </label>
+      </section>
+
+      <!-- Room Setup -->
+      <section class="panel">
+        <h2>Room Setup</h2>
+        <p class="hint">One item per line (e.g., bed orientation, equipment locations).</p>
+        <textarea
+          rows="5"
+          name="roomSetupText"
+          [(ngModel)]="roomSetupText"></textarea>
+      </section>
+
+      <!-- Drapes -->
+      <section class="panel">
+        <h2>Drapes</h2>
+        <p class="hint">One drape per line (e.g., laparotomy drape, extremity drape).</p>
+        <textarea
+          rows="5"
+          name="drapesText"
+          [(ngModel)]="drapesText"></textarea>
+      </section>
+
+      <!-- Instruments -->
+      <section class="panel">
+        <h2>Instruments</h2>
+        <p class="hint">
+          One instrument per line.
+        </p>
+        <textarea
+          rows="6"
+          name="instrumentsText"
+          [(ngModel)]="instrumentsText"></textarea>
+      </section>
+
+      <!-- Supplies -->
+      <section class="panel">
+        <h2>Supplies</h2>
+        <p class="hint">One supply per line (e.g., 4x4s, laps, bovie tip).</p>
+        <textarea
+          rows="6"
+          name="suppliesText"
+          [(ngModel)]="suppliesText"></textarea>
+      </section>
+
+      <!-- Medications -->
+      <section class="panel">
+        <h2>Medications</h2>
+        <p class="hint">
+          One medication per line. You can keep it simple (e.g., "TXA 1g IV").
+        </p>
+        <textarea
+          rows="6"
+          name="medicationsText"
+          [(ngModel)]="medicationsText"></textarea>
+      </section>
+
+      <!-- Sutures -->
+      <section class="panel">
+        <h2>Sutures</h2>
+        <p class="hint">
+          One suture per line (e.g., "0 Vicryl CT-1", "3-0 Monocryl PS-2").
+        </p>
+        <textarea
+          rows="6"
+          name="suturesText"
+          [(ngModel)]="suturesText"></textarea>
+      </section>
+
+      <!-- Dressings -->
+      <section class="panel">
+        <h2>Dressings</h2>
+        <p class="hint">
+          One dressing configuration per line (e.g., "4x4s, cover roll", "Mepilex").
+        </p>
+        <textarea
+          rows="4"
+          name="dressingsText"
+          [(ngModel)]="dressingsText"></textarea>
+      </section>
+
+      <!-- Notes -->
+      <section class="panel">
+        <h2>Notes</h2>
+        <p class="hint">
+          Any surgeon-specific preferences, tips, or gotchas.
+        </p>
+        <textarea
+          rows="6"
+          name="notesText"
+          [(ngModel)]="notesText"></textarea>
+      </section>
+    </div>
+  </form>
+</div>
 

@@ -208,7 +208,7 @@ export class ProcedureDetailComponent {
     });
   }
 }
-*/
+*
 
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -299,5 +299,124 @@ export class ProcedureDetailComponent {
   // helpers for *ngFor in template so it doesn't choke on undefined
   asArray<T>(v: T[] | undefined | null): T[] {
     return v ?? [];
+  }
+}
+*/
+
+import { Component } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterModule, ActivatedRoute, Router } from "@angular/router";
+import { ProceduresService } from "../../../core/services/procedures.service";
+import { Procedure } from "../../../core/models/procedure.model";
+import { switchMap } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { FormsModule } from "@angular/forms";
+
+@Component({
+  selector: 'app-procedure-detail',
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule],
+  templateUrl: './procedure-detail.component.html',
+  styleUrls: ['./procedure-detail.component.scss']
+})
+export class ProcedureDetailComponent {
+  readonly procedure$!: Observable<Procedure | undefined>;
+  editMode = false;
+  editable?: Procedure;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private svc: ProceduresService
+  ) {
+    this.procedure$ = this.route.paramMap.pipe(
+      switchMap(params => {
+        const id = params.get('id')!;
+        return this.svc.getById(id);
+      })
+    );
+  }
+
+  // -------- VIEW/EDIT --------
+
+  startEdit(p: Procedure) {
+    // deep clone to avoid mutating the original until save
+    this.editable = JSON.parse(JSON.stringify(p)) as Procedure;
+    this.editMode = true;
+  }
+
+  cancelEdit() {
+    this.editMode = false;
+    this.editable = undefined;
+  }
+
+  saveEdit() {
+    if (!this.editable) return;
+
+    this.svc.updateProcedure(this.editable).subscribe({
+      next: () => {
+        this.editMode = false;
+        this.editable = undefined;
+        // Stay on the page; next navigation will pull updated data
+      },
+      error: err => {
+        console.error('Update failed', err);
+        alert('Error saving changes.');
+      }
+    });
+  }
+
+  // -------- DELETE --------
+
+  confirmDelete(p: Procedure) {
+    const id = (p as any).id ?? (p as any)._id;
+
+    if (!id) {
+      alert("Cannot delete: missing id.");
+      return;
+    }
+
+    const ok = confirm(`Delete procedure "${p.name}"?`);
+    if (!ok) return;
+
+    this.svc.deleteProcedure(id).subscribe({
+      next: () => {
+        alert("Procedure deleted.");
+        this.router.navigate(['/procedures']);
+      },
+      error: err => {
+        console.error("Delete failed", err);
+        alert("Error deleting procedure.");
+      }
+    });
+  }
+
+  // -------- TEMPLATE HELPERS --------
+
+  // for *ngFor when an array may be undefined
+  asArray<T>(v: T[] | undefined | null): T[] {
+    return v ?? [];
+  }
+
+  // convert comma-separated text into tags array
+  onTagsChange(value: string, e: Procedure) {
+    e.tags = (value || '')
+      .split(',')
+      .map(t => t.trim())
+      .filter(Boolean);
+  }
+
+  // generic helper for multi-line string fields
+  onLinesChange(
+    field: 'roomSetup' | 'drapes' | 'dressings' | 'notes',
+    value: string,
+    e: Procedure
+  ) {
+    const lines = (value || '')
+      .split('\n')
+      .map(l => l.trim())
+      .filter(Boolean);
+
+    (e as any)[field] = lines;
   }
 }
