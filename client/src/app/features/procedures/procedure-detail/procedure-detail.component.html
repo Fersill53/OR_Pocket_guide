@@ -1,3 +1,4 @@
+<!--
 <section class="detail-page" *ngIf="(procedure$ | async) as p; else loading">
   <a routerLink="/procedures" class="back">← Back</a>
 
@@ -117,3 +118,50 @@
 <ng-template #loading>
   <div class="loading">Loading procedure…</div>
 </ng-template>
+-->
+
+<div class="page">
+  <ng-container *ngIf="procedure$ | async as procedure">
+    
+    <!-- HEADER -->
+    <h1>{{ procedure.name }}</h1>
+
+    <!-- ACTION BUTTONS -->
+    <div class="actions">
+      <button class="btn primary" (click)="startEdit(procedure)">
+        Edit
+      </button>
+
+      <button class="btn danger" (click)="confirmDelete(procedure)">
+        Delete
+      </button>
+
+      <button class="btn" routerLink="/procedures">
+        Back
+      </button>
+    </div>
+
+    <!-- VIEW MODE -->
+    <div *ngIf="!editMode">
+      <p><strong>Service:</strong> {{ procedure.service }}</p>
+
+      <h3>Instruments</h3>
+      <ul>
+        <li *ngFor="let inst of procedure.instruments">{{ inst.name }}</li>
+      </ul>
+
+      <h3>Notes</h3>
+      <ul>
+        <li *ngFor="let n of procedure.notes">{{ n }}</li>
+      </ul>
+    </div>
+
+    <!-- EDIT MODE -->
+    <div *ngIf="editMode">
+      <!-- Your existing edit form stuff here -->
+      <button class="btn primary" (click)="saveEdit()">Save</button>
+      <button class="btn" (click)="cancelEdit()">Cancel</button>
+    </div>
+
+  </ng-container>
+</div>
