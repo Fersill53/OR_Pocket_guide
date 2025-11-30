@@ -1,0 +1,69 @@
+<section class="page supplies-page">
+  <header class="page-header">
+    <h1>Supplies Library</h1>
+    <p class="page-subtitle">
+      Quick visual reference of common OR supplies to help new staff
+      learn names and recognize items on the field.
+    </p>
+  </header>
+
+  <section *ngIf="supplies.length; else emptyState">
+    <div class="supplies-grid">
+      <article
+        class="supply-card"
+        *ngFor="let s of supplies"
+      >
+        <div class="supply-image-wrapper">
+          <img
+            [src]="s.imageUrl"
+            [alt]="s.name"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="supply-body">
+          <div class="supply-header">
+            <h2 class="supply-name">{{ s.name }}</h2>
+            <span class="supply-chip">
+              {{ s.category }}
+            </span>
+          </div>
+
+          <p class="supply-description">
+            {{ s.description }}
+          </p>
+
+          <div
+            *ngIf="s.altNames?.length"
+            class="supply-alt"
+          >
+            <span class="label">Also called:</span>
+            <span class="value">
+              {{ (s.altNames || []).join(', ') }}
+            </span>
+          </div>
+
+          <div
+            *ngIf="s.notes"
+            class="supply-notes"
+          >
+            <span class="label">Notes:</span>
+            <span class="value">
+              {{ s.notes }}
+            </span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <p>No supplies have been added yet.</p>
+      <p class="hint">
+        You can start by defining a standard set like
+        lap sponges, raytecs, Ioban, suction tubing, Bovie tip, etc.
+      </p>
+    </div>
+  </ng-template>
+</section>

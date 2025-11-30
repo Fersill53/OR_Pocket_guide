@@ -1,22 +1,36 @@
 <header class="app-header">
-  <div class="left">
-    <span class="logo">{{ title }}</span>
+  <div class="app-header-left">
+    <span class="app-title">OR Pocket Guide</span>
   </div>
 
-  <nav>
-    <a class="nav-link" routerLink="/procedures" routerLinkActive="active">Procedures</a>
-    <a class="nav-link add-btn" routerLink="/procedures/add">+ Add</a>
+  <nav class="app-nav">
+    <a
+      routerLink="/procedures"
+      routerLinkActive="active"
+    >
+      Procedures
+    </a>
 
-    <button class="theme-toggle" (click)="toggleTheme()" [attr.aria-pressed]="isDark">
-      {{ isDark ? '☾ Dark' : '☼ Light' }}
-    </button>
+    <a
+      routerLink="/supplies"
+      routerLinkActive="active"
+    >
+      Supplies
+    </a>
   </nav>
+
+  <div class="app-header-right">
+    <button
+      type="button"
+      class="theme-toggle"
+      (click)="toggleTheme()"
+      aria-label="Toggle dark / light mode"
+    >
+      🌓
+    </button>
+  </div>
 </header>
 
-<main>
+<main class="app-main">
   <router-outlet></router-outlet>
 </main>
-
-<footer>
-  Built for Surgical Tech learning • Demo
-</footer>

@@ -1,0 +1,132 @@
+.page.supplies-page {
+  padding: 1.5rem 1.75rem 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+  }
+
+  .page-subtitle {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-muted, #9ca3af);
+  }
+}
+
+.supplies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.supply-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-subtle, #1f2933);
+  background-color: var(--surface, #111827);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.supply-image-wrapper {
+  width: 100%;
+  padding-top: 56%;
+  position: relative;
+  background: radial-gradient(circle at 30% 30%, #1f2937, #020617);
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 0.75rem;
+  }
+}
+
+.supply-body {
+  padding: 0.9rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.supply-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.supply-name {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.supply-chip {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle, #1f2933);
+  background-color: var(--pill-bg, #020617);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.supply-description {
+  font-size: 0.9rem;
+  margin: 0;
+  color: var(--text-normal, #e5e7eb);
+}
+
+.supply-alt,
+.supply-notes {
+  font-size: 0.82rem;
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.1rem;
+
+  .label {
+    font-weight: 600;
+    color: var(--text-muted, #9ca3af);
+  }
+
+  .value {
+    color: var(--text-normal, #e5e7eb);
+  }
+}
+
+.empty-state {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px dashed var(--border-subtle, #1f2933);
+  background-color: var(--surface-soft, #020617);
+  text-align: center;
+
+  p {
+    margin: 0.15rem 0;
+  }
+
+  .hint {
+    font-size: 0.85rem;
+    color: var(--text-muted, #9ca3af);
+  }
+}
+
+@media (max-width: 640px) {
+  .page.supplies-page {
+    padding-inline: 1rem;
+  }
+}
