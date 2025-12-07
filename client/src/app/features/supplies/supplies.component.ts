@@ -60,7 +60,17 @@ export class SuppliesComponent {
         'Adhesive antimicrobial drape placed over the prepped site to reduce bacterial load.',
       imageUrl: 'assets/supplies/ioban.jpg',
       notes: 'Apply after prep is completely dry to avoid skin irritation.'
-    }
+    },
+    {
+      id: 'bovie',
+      name: 'Bovie Electrosurgical pencil',
+      category: 'Hemostasis / Cautery',
+      altNames: ['Bovie'],
+      description:
+      'Electrosurgical unit that cauterizes to help exposure or provide cautery to prevent or rectify bleeding',
+      imageUrl: 'assets/supplies/bovie.jpg',
+      notes: 'Ensure to attach bovie pad for proper function. Follow evidence based practice and hospital policy when placing pad.'
+    },
   ];
 
   // In the future we could add search/filter here
