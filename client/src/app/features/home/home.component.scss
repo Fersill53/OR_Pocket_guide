@@ -1,0 +1,50 @@
+.home-page {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.hero-card {
+  padding: 2rem;
+  max-width: 600px;
+  text-align: center;
+  border-radius: 1rem;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.home-btn {
+  display: block;
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.1);
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 1rem;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: 0.2s;
+
+  &:hover {
+    background: rgba(255,255,255,0.2);
+  }
+}

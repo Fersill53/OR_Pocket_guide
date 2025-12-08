@@ -67,6 +67,7 @@ export const routes: Routes = [
 
 import { Routes } from '@angular/router';
 
+import { HomeComponent } from './features/home/home.component';
 import { ProceduresListComponent } from './features/procedures/procedures-list/procedures-list.component';
 import { ProcedureDetailComponent } from './features/procedures/procedure-detail/procedure-detail.component';
 import { AddProcedureComponent } from './features/procedures/add-procedure/add-procedure.component';
@@ -74,7 +75,7 @@ import { SuppliesComponent } from './features/supplies/supplies.component';
 import { TechsComponent } from './features/techs/techs.component';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'procedures' },
+  { path: '', component: HomeComponent },
 
   // Procedures
   { path: 'procedures', component: ProceduresListComponent },
