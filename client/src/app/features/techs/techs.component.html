@@ -1,0 +1,103 @@
+<section class="page techs-page">
+  <header class="page-header">
+    <h1>Techs</h1>
+    <p class="page-subtitle">
+      Resources for OR techs: education, back table and mayo stand setup.
+    </p>
+  </header>
+
+  <!-- Secondary toolbar / tab bar -->
+  <nav class="techs-tabs">
+    <button
+      type="button"
+      class="tab-button"
+      [class.active]="isActive('education')"
+      (click)="setTab('education')"
+    >
+      Education
+    </button>
+
+    <button
+      type="button"
+      class="tab-button"
+      [class.active]="isActive('backtable')"
+      (click)="setTab('backtable')"
+    >
+      Back Table Setup
+    </button>
+
+    <button
+      type="button"
+      class="tab-button"
+      [class.active]="isActive('mayo')"
+      (click)="setTab('mayo')"
+    >
+      Mayo Setup
+    </button>
+  </nav>
+
+  <!-- Tab content -->
+  <section class="tab-content">
+    <!-- Education -->
+    <div *ngIf="isActive('education')" class="card content-card">
+      <h2>Education</h2>
+      <p>
+        High-yield notes for new and cross-training techs:
+        terminology, roles, and basic OR workflow.
+      </p>
+
+      <ul class="bullet-list">
+        <li>Role of the scrub tech vs circulator vs anesthesia.</li>
+        <li>Basic sterile field rules and common violations.</li>
+        <li>How to read a preference card quickly and prioritize.</li>
+        <li>Checklist for room readiness before the patient enters.</li>
+      </ul>
+
+      <p class="hint">
+        You can expand this section later with links to PDFs, hospital
+        policies, or short competency checklists.
+      </p>
+    </div>
+
+    <!-- Back table setup -->
+    <div *ngIf="isActive('backtable')" class="card content-card">
+      <h2>Back Table Setup</h2>
+      <p>
+        Visual and step-by-step guidance for standard back table layouts.
+      </p>
+
+      <ol class="bullet-list numbered">
+        <li>Open and organize basins, towels, and drapes.</li>
+        <li>Separate instruments by type: cutting, grasping, retracting, etc.</li>
+        <li>Line up clamps and hemostats from small to large.</li>
+        <li>Keep sharp items in a designated “sharps zone”.</li>
+        <li>Reserve a clean zone for implants / grafts if needed.</li>
+      </ol>
+
+      <p class="hint">
+        Later you can add diagrams or photos (e.g. ortho, laparoscopy,
+        neuro sets) plus procedure-specific layout variations.
+      </p>
+    </div>
+
+    <!-- Mayo setup -->
+    <div *ngIf="isActive('mayo')" class="card content-card">
+      <h2>Mayo Setup</h2>
+      <p>
+        Common mayo stand layouts to support the surgeon’s first 10–15 minutes.
+      </p>
+
+      <ul class="bullet-list">
+        <li>Top tier: knife, pickups, hemostats, scissors, needle holder.</li>
+        <li>Middle: most frequently used instruments for that procedure.</li>
+        <li>Edge: frequently used sutures and Bovie tip within easy reach.</li>
+        <li>Keep a “flip zone” open for when you add extra instruments.</li>
+      </ul>
+
+      <p class="hint">
+        You can build specific presets here (e.g. lap chole mayo, total knee,
+        C-section) with photos or diagrams for trainees.
+      </p>
+    </div>
+  </section>
+</section>

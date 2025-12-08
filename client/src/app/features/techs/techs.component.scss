@@ -1,0 +1,98 @@
+.techs-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+
+  .page-subtitle {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+}
+
+.techs-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.tab-button {
+  border: none;
+  outline: none;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
+  opacity: 0.8;
+  transition: background 0.15s ease, opacity 0.15s ease, transform 0.1s ease;
+
+  &.active {
+    background: rgba(255, 255, 255, 0.12);
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+
+  &:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.06);
+    opacity: 1;
+  }
+}
+
+.tab-content {
+  margin-top: 0.5rem;
+}
+
+.content-card {
+  padding: 1rem 1.1rem;
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+
+  h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .bullet-list {
+    font-size: 0.9rem;
+    margin-left: 1.1rem;
+    margin-bottom: 0.75rem;
+
+    &.numbered {
+      list-style: decimal;
+    }
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  .hint {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin-top: 0.4rem;
+  }
+}
