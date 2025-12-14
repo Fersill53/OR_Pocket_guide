@@ -65,6 +65,7 @@ export const routes: Routes = [
 ];
 */
 
+/* add fix for add being confused for id
 import { Routes } from '@angular/router';
 
 import { HomeComponent } from './features/home/home.component';
@@ -90,4 +91,36 @@ export const routes: Routes = [
 
   { path: '**', redirectTo: 'procedures' }
 ];
+*/
 
+
+import { Routes } from '@angular/router';
+
+import { HomeComponent } from './features/home/home.component';
+import { ProceduresListComponent } from './features/procedures/procedures-list/procedures-list.component';
+import { ProcedureDetailComponent } from './features/procedures/procedure-detail/procedure-detail.component';
+import { AddProcedureComponent } from './features/procedures/add-procedure/add-procedure.component';
+import { SuppliesComponent } from './features/supplies/supplies.component';
+import { TechsComponent } from './features/techs/techs.component';
+
+export const routes: Routes = [
+  { path: '', component: HomeComponent },
+
+  // Procedures
+  { path: 'procedures', component: ProceduresListComponent },
+
+  // ✅ Add page aliases (so any button/link works)
+  { path: 'procedures/add', redirectTo: 'procedures/add/new', pathMatch: 'full' },
+  { path: 'procedures/add/new', component: AddProcedureComponent },
+
+  // Detail MUST remain after add routes
+  { path: 'procedures/:id', component: ProcedureDetailComponent },
+
+  // Supplies
+  { path: 'supplies', component: SuppliesComponent },
+
+  // Techs
+  { path: 'techs', component: TechsComponent },
+
+  { path: '**', redirectTo: 'procedures' }
+];
