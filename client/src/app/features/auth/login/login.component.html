@@ -1,31 +1,35 @@
-<div class="auth-page">
-  <div class="auth-card">
-    <h1>Login</h1>
-    <p class="sub">Sign in to access OR Pocket Guide.</p>
+<div class="page">
+  <div class="card">
+    <h1>OR Pocket Guide</h1>
+    <p class="sub">Sign in to continue</p>
 
     <div *ngIf="error" class="error">{{ error }}</div>
 
     <form (ngSubmit)="submit()" #f="ngForm" autocomplete="off">
-      <label>Email</label>
-      <input
-        name="email"
-        type="email"
-        [(ngModel)]="email"
-        required
-        placeholder="you@hospital.org"
-      />
+      <label>
+        Email
+        <input
+          name="email"
+          [(ngModel)]="email"
+          type="email"
+          required
+          placeholder="you@hospital.org"
+        />
+      </label>
 
-      <label>Password</label>
-      <input
-        name="password"
-        type="password"
-        [(ngModel)]="password"
-        required
-        placeholder="••••••••"
-      />
+      <label>
+        Password
+        <input
+          name="password"
+          [(ngModel)]="password"
+          type="password"
+          required
+          placeholder="••••••••"
+        />
+      </label>
 
-      <button class="btn primary" type="submit" [disabled]="loading || f.invalid">
-        {{ loading ? 'Signing in…' : 'Sign In' }}
+      <button class="btn" type="submit" [disabled]="loading || f.invalid">
+        {{ loading ? 'Signing in…' : 'Login' }}
       </button>
     </form>
   </div>

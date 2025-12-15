@@ -128,32 +128,32 @@ export const routes: Routes = [
 
 import { Routes } from '@angular/router';
 
+import { authGuard } from './core/guards/auth.guard';
+
 import { HomeComponent } from './features/home/home.component';
+import { LoginComponent } from './features/auth/login/login.component';
+
 import { ProceduresListComponent } from './features/procedures/procedures-list/procedures-list.component';
 import { ProcedureDetailComponent } from './features/procedures/procedure-detail/procedure-detail.component';
 import { AddProcedureComponent } from './features/procedures/add-procedure/add-procedure.component';
+
 import { SuppliesComponent } from './features/supplies/supplies.component';
 import { TechsComponent } from './features/techs/techs.component';
-import { LoginComponent } from './features/auth/login/login.component';
-
-import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-
-  // Auth
+  // ✅ public
   { path: 'login', component: LoginComponent },
 
-  // Procedures (protected)
-  { path: 'procedures', component: ProceduresListComponent, canActivate: [AuthGuard] },
-  { path: 'procedures/add/new', component: AddProcedureComponent, canActivate: [AuthGuard] },
-  { path: 'procedures/:id', component: ProcedureDetailComponent, canActivate: [AuthGuard] },
+  // ✅ protected
+  { path: '', component: HomeComponent, canActivate: [authGuard] },
 
-  // Supplies (protected or not - your choice)
-  { path: 'supplies', component: SuppliesComponent, canActivate: [AuthGuard] },
+  { path: 'procedures', component: ProceduresListComponent, canActivate: [authGuard] },
+  { path: 'procedures/add/new', component: AddProcedureComponent, canActivate: [authGuard] },
+  { path: 'procedures/:id', component: ProcedureDetailComponent, canActivate: [authGuard] },
 
-  // Techs
-  { path: 'techs', component: TechsComponent, canActivate: [AuthGuard] },
+  { path: 'supplies', component: SuppliesComponent, canActivate: [authGuard] },
+  { path: 'techs', component: TechsComponent, canActivate: [authGuard] },
 
+  // fallback
   { path: '**', redirectTo: '' }
 ];

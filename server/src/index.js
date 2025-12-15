@@ -412,6 +412,7 @@ mongoose
   });
 */
 
+/*
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -424,10 +425,71 @@ const PORT = process.env.PORT || 3000;
 
 /* =========================
    Middleware
+========================= *
+app.use(cors({
+  origin: [
+    'http://localhost:4200',
+    'https://or-pocket-guide.onrender.com'
+  ],
+  credentials: true
+}));
+
+app.use(express.json());
+
+/* =========================
+   Health / Root Routes
+========================= *
+app.get('/', (req, res) => {
+  res.status(200).send('OR Pocket Guide API is running ✅');
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ ok: true });
+});
+
+/* =========================
+   API Routes
+========================= *
+app.use('/api/procedures', proceduresRoutes);
+
+/* =========================
+   MongoDB Connection
+========================= *
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('✅ Connected to MongoDB');
+  })
+  .catch(err => {
+    console.error('❌ MongoDB connection error:', err);
+    process.exit(1);
+  });
+
+/* =========================
+   Start Server
+========================= *
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+*/
+
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config();
+
+const proceduresRoutes = require('./routes/procedures.routes');
+const authRoutes = require('./routes/auth.routes');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+/* =========================
+   Middleware
 ========================= */
 app.use(cors({
   origin: [
     'http://localhost:4200',
+    'https://or-pocket-guide-frontend.onrender.com',
     'https://or-pocket-guide.onrender.com'
   ],
   credentials: true
@@ -449,15 +511,14 @@ app.get('/health', (req, res) => {
 /* =========================
    API Routes
 ========================= */
+app.use('/api/auth', authRoutes);
 app.use('/api/procedures', proceduresRoutes);
 
 /* =========================
    MongoDB Connection
 ========================= */
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log('✅ Connected to MongoDB');
-  })
+  .then(() => console.log('✅ Connected to MongoDB'))
   .catch(err => {
     console.error('❌ MongoDB connection error:', err);
     process.exit(1);
