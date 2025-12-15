@@ -1,3 +1,4 @@
+<!--
 <header class="app-header">
   <div class="app-header-left">
     <span class="app-title">OR Pocket Guide</span>
@@ -30,6 +31,47 @@
       routerLink="/techs"
       routerLinkActive="active"
     >
+      Techs
+    </a>
+  </nav>
+
+  <div class="app-header-right">
+    <button
+      type="button"
+      class="theme-toggle"
+      (click)="toggleTheme()"
+      aria-label="Toggle dark / light mode"
+    >
+      🌓
+    </button>
+  </div>
+</header>
+
+<main class="app-main">
+  <router-outlet></router-outlet>
+</main>
+-->
+
+<header class="app-header">
+  <div class="app-header-left">
+    <span class="app-title">OR Pocket Guide</span>
+  </div>
+
+  <!-- ✅ IMPORTANT: must be *ngIf (not ngIf) -->
+  <nav class="app-nav" *ngIf="!isLoginPage">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Home
+    </a>
+
+    <a routerLink="/procedures" routerLinkActive="active">
+      Procedures
+    </a>
+
+    <a routerLink="/supplies" routerLinkActive="active">
+      Supplies
+    </a>
+
+    <a routerLink="/techs" routerLinkActive="active">
       Techs
     </a>
   </nav>

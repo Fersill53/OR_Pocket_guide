@@ -103,7 +103,7 @@ export class AppComponent {
 }
 */
 
-
+/*
 // src/app/app.component.ts
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
@@ -139,5 +139,37 @@ export class AppComponent {
     const root = document.documentElement;
     if (this.isDark) root.classList.add('dark');
     else root.classList.remove('dark');
+  }
+}
+*/
+
+import { Component } from '@angular/core';
+import { Router, NavigationEnd, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  isLoginPage = false;
+
+  constructor(private router: Router) {
+    // Set initial value
+    this.isLoginPage = this.router.url.startsWith('/login');
+
+    // Update on navigation
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe(e => {
+        this.isLoginPage = e.urlAfterRedirects.startsWith('/login');
+      });
+  }
+
+  toggleTheme() {
+    document.body.classList.toggle('dark');
   }
 }
