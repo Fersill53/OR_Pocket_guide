@@ -26,7 +26,7 @@ export class LoginComponent {
     this.auth.login(this.email.trim(), this.password).subscribe({
       next: () => {
         this.loading = false;
-        this.router.navigate(['/procedures']);
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         this.loading = false;

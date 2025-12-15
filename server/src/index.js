@@ -284,6 +284,7 @@ mongoose
   });
 */
 
+/* adding login security VVV
 // server/src/index.js
 const express = require('express');
 const mongoose = require('mongoose');
@@ -345,6 +346,64 @@ mongoose
     app.listen(PORT, () => {
       console.log(`🚀 Server listening on port ${PORT}`);
     });
+  })
+  .catch((err) => {
+    console.error('❌ Failed to connect to MongoDB', err);
+    process.exit(1);
+  });
+*/
+
+require('dotenv').config();
+
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+
+const proceduresRoutes = require('./routes/procedures.routes');
+const authRoutes = require('./routes/auth.routes');
+const authMiddleware = require('./middleware/auth.middleware');
+
+const app = express();
+
+// ===== CORS =====
+// Set FRONTEND_URL on Render to: https://or-pocket-guide-frontend.onrender.com
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: function (origin, cb) {
+      // allow server-to-server or curl (no origin)
+      if (!origin) return cb(null, true);
+
+      if (allowedOrigins.length === 0) return cb(null, true);
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+
+      return cb(new Error(`CORS blocked for origin: ${origin}`));
+    },
+    credentials: true
+  })
+);
+
+app.use(express.json({ limit: '2mb' }));
+
+// ===== Routes =====
+app.get('/health', (req, res) => res.json({ ok: true }));
+
+app.use('/api/auth', authRoutes);
+
+// Protect procedures API (login required)
+app.use('/api/procedures', authMiddleware, proceduresRoutes);
+
+// ===== Mongo =====
+const PORT = process.env.PORT || 3000;
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('✅ MongoDB connected');
+    app.listen(PORT, () => console.log(`✅ API listening on ${PORT}`));
   })
   .catch((err) => {
     console.error('❌ Failed to connect to MongoDB', err);
