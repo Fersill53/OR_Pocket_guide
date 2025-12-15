@@ -93,7 +93,7 @@ export const routes: Routes = [
 ];
 */
 
-
+/* adding login security
 import { Routes } from '@angular/router';
 
 import { HomeComponent } from './features/home/home.component';
@@ -123,4 +123,37 @@ export const routes: Routes = [
   { path: 'techs', component: TechsComponent },
 
   { path: '**', redirectTo: 'procedures' }
+];
+*/
+
+import { Routes } from '@angular/router';
+
+import { HomeComponent } from './features/home/home.component';
+import { ProceduresListComponent } from './features/procedures/procedures-list/procedures-list.component';
+import { ProcedureDetailComponent } from './features/procedures/procedure-detail/procedure-detail.component';
+import { AddProcedureComponent } from './features/procedures/add-procedure/add-procedure.component';
+import { SuppliesComponent } from './features/supplies/supplies.component';
+import { TechsComponent } from './features/techs/techs.component';
+import { LoginComponent } from './features/auth/login/login.component';
+
+import { AuthGuard } from './core/guards/auth.guard';
+
+export const routes: Routes = [
+  { path: '', component: HomeComponent },
+
+  // Auth
+  { path: 'login', component: LoginComponent },
+
+  // Procedures (protected)
+  { path: 'procedures', component: ProceduresListComponent, canActivate: [AuthGuard] },
+  { path: 'procedures/add/new', component: AddProcedureComponent, canActivate: [AuthGuard] },
+  { path: 'procedures/:id', component: ProcedureDetailComponent, canActivate: [AuthGuard] },
+
+  // Supplies (protected or not - your choice)
+  { path: 'supplies', component: SuppliesComponent, canActivate: [AuthGuard] },
+
+  // Techs
+  { path: 'techs', component: TechsComponent, canActivate: [AuthGuard] },
+
+  { path: '**', redirectTo: '' }
 ];

@@ -1,0 +1,32 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <h1>Login</h1>
+    <p class="sub">Sign in to access OR Pocket Guide.</p>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <form (ngSubmit)="submit()" #f="ngForm" autocomplete="off">
+      <label>Email</label>
+      <input
+        name="email"
+        type="email"
+        [(ngModel)]="email"
+        required
+        placeholder="you@hospital.org"
+      />
+
+      <label>Password</label>
+      <input
+        name="password"
+        type="password"
+        [(ngModel)]="password"
+        required
+        placeholder="••••••••"
+      />
+
+      <button class="btn primary" type="submit" [disabled]="loading || f.invalid">
+        {{ loading ? 'Signing in…' : 'Sign In' }}
+      </button>
+    </form>
+  </div>
+</div>
