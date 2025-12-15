@@ -472,6 +472,7 @@ app.listen(PORT, () => {
 });
 */
 
+/*
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -485,7 +486,7 @@ const PORT = process.env.PORT || 3000;
 
 /* =========================
    Middleware
-========================= */
+========================= *
 app.use(cors({
   origin: [
     'http://localhost:4200',
@@ -499,7 +500,7 @@ app.use(express.json());
 
 /* =========================
    Health / Root Routes
-========================= */
+========================= *
 app.get('/', (req, res) => {
   res.status(200).send('OR Pocket Guide API is running ✅');
 });
@@ -510,13 +511,13 @@ app.get('/health', (req, res) => {
 
 /* =========================
    API Routes
-========================= */
+========================= *
 app.use('/api/auth', authRoutes);
 app.use('/api/procedures', proceduresRoutes);
 
 /* =========================
    MongoDB Connection
-========================= */
+========================= *
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ Connected to MongoDB'))
   .catch(err => {
@@ -526,7 +527,53 @@ mongoose.connect(process.env.MONGODB_URI)
 
 /* =========================
    Start Server
-========================= */
+========================= *
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+*/
+
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+
+const proceduresRoutes = require('./routes/procedures.routes');
+const authRoutes = require('./routes/auth.routes');
+
+const app = express();
+
+// --- middleware ---
+app.use(express.json());
+
+// If frontend and backend are separate on Render, keep CORS:
+app.use(cors({
+  origin: [
+    'http://localhost:4200',
+    'https://or-pocket-guide-frontend.onrender.com',
+    'https://or-pocket-guide.onrender.com'
+  ],
+  credentials: true
+}));
+
+// --- routes ---
+app.get('/health', (req, res) => res.json({ ok: true }));
+
+app.use('/api/procedures', proceduresRoutes);
+app.use('/api/auth', authRoutes);
+
+// --- db + start ---
+const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_URI;
+
+(async () => {
+  try {
+    if (!MONGO_URI) throw new Error('Missing MONGO_URI env var');
+    await mongoose.connect(MONGO_URI);
+    console.log('✅ MongoDB connected');
+
+    app.listen(PORT, () => console.log(`✅ API running on port ${PORT}`));
+  } catch (err) {
+    console.error('❌ Failed to connect to MongoDB', err);
+    process.exit(1);
+  }
+})();
