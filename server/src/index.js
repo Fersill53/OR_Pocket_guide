@@ -533,6 +533,7 @@ app.listen(PORT, () => {
 });
 */
 
+/*
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -558,6 +559,60 @@ app.use(cors({
 // --- routes ---
 app.get('/health', (req, res) => res.json({ ok: true }));
 
+app.use('/api/procedures', proceduresRoutes);
+app.use('/api/auth', authRoutes);
+
+// --- db + start ---
+const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_URI;
+
+(async () => {
+  try {
+    if (!MONGO_URI) throw new Error('Missing MONGO_URI env var');
+    await mongoose.connect(MONGO_URI);
+    console.log('✅ MongoDB connected');
+
+    app.listen(PORT, () => console.log(`✅ API running on port ${PORT}`));
+  } catch (err) {
+    console.error('❌ Failed to connect to MongoDB', err);
+    process.exit(1);
+  }
+})();
+*/
+
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+
+const proceduresRoutes = require('./routes/procedures.routes');
+const authRoutes = require('./routes/auth.routes');
+
+const app = express();
+
+// --- middleware ---
+app.use(express.json());
+
+app.use(cors({
+  origin: [
+    'http://localhost:4200',
+    'https://or-pocket-guide-frontend.onrender.com',
+    'https://or-pocket-guide.onrender.com'
+  ],
+  credentials: true
+}));
+
+// ✅ Root route so visiting the backend URL doesn't 404
+app.get('/', (req, res) => {
+  res.type('text').send('OR Pocket Guide API is running ✅');
+});
+
+// ✅ Health check (nice for debugging Render)
+app.get('/health', (req, res) => res.json({ ok: true }));
+
+// ✅ Optional: silence favicon.ico 404s
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
+// --- routes ---
 app.use('/api/procedures', proceduresRoutes);
 app.use('/api/auth', authRoutes);
 
