@@ -143,6 +143,7 @@ export class AppComponent {
 }
 */
 
+/*
 import { Component } from '@angular/core';
 import { Router, NavigationEnd, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -171,5 +172,54 @@ export class AppComponent {
 
   toggleTheme() {
     document.body.classList.toggle('dark');
+  }
+}
+*/
+
+import { Component } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  isLoginPage = false;
+  private readonly themeKey = 'or_guide_theme';
+
+  constructor(private router: Router) {
+    // ✅ Correctly detect login route on initial load AND after navigation
+    this.isLoginPage = this.isLoginUrl(this.router.url);
+
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe(e => {
+        this.isLoginPage = this.isLoginUrl(e.urlAfterRedirects);
+      });
+
+    // ✅ Restore saved theme
+    const saved = localStorage.getItem(this.themeKey);
+    if (saved === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }
+
+  toggleTheme() {
+    // ✅ Toggle class on <html> (documentElement) — most reliable
+    document.documentElement.classList.toggle('dark');
+
+    const isDark = document.documentElement.classList.contains('dark');
+    localStorage.setItem(this.themeKey, isDark ? 'dark' : 'light');
+  }
+
+  private isLoginUrl(url: string): boolean {
+    // Handles /login, /login?x=y, and redirects
+    return url === '/login' || url.startsWith('/login?') || url.startsWith('/login/');
   }
 }
