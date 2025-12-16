@@ -126,6 +126,7 @@ export const routes: Routes = [
 ];
 */
 
+/*
 import { Routes } from '@angular/router';
 
 import { authGuard } from './core/guards/auth.guard';
@@ -155,5 +156,34 @@ export const routes: Routes = [
   { path: 'techs', component: TechsComponent, canActivate: [authGuard] },
 
   // fallback
+  { path: '**', redirectTo: '' }
+];
+*/
+
+import { Routes } from '@angular/router';
+
+import { HomeComponent } from './features/home/home.component';
+import { ProceduresListComponent } from './features/procedures/procedures-list/procedures-list.component';
+import { ProcedureDetailComponent } from './features/procedures/procedure-detail/procedure-detail.component';
+import { AddProcedureComponent } from './features/procedures/add-procedure/add-procedure.component';
+import { SuppliesComponent } from './features/supplies/supplies.component';
+import { TechsComponent } from './features/techs/techs.component';
+
+import { LoginComponent } from './features/auth/login/login.component';
+import { RegisterComponent } from './features/auth/register/register.component';
+
+export const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+
+  { path: '', component: HomeComponent },
+
+  { path: 'procedures', component: ProceduresListComponent },
+  { path: 'procedures/add/new', component: AddProcedureComponent },
+  { path: 'procedures/:id', component: ProcedureDetailComponent },
+
+  { path: 'supplies', component: SuppliesComponent },
+  { path: 'techs', component: TechsComponent },
+
   { path: '**', redirectTo: '' }
 ];

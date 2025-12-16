@@ -11,7 +11,7 @@
     </div>
   </div>
 </section>
--->
+--
 
 <section class="home-shell">
   <div class="home-card">
@@ -28,6 +28,35 @@
 
     <a class="home-btn" routerLink="/techs">
       Tech Education
+    </a>
+  </div>
+</section>
+-->
+
+<section class="home-page">
+  <div class="home-header">
+    <h1>OR Pocket Guide</h1>
+    <p>Quick reference + training resources for new and current staff.</p>
+
+    <!-- ✅ Logout ONLY exists on Home -->
+    <button class="btn danger" type="button" (click)="logout()">Logout</button>
+  </div>
+
+  <!-- keep your existing cards/tiles exactly how you like -->
+  <div class="home-grid">
+    <a class="card home-tile" routerLink="/procedures">
+      <h2>Browse Procedures</h2>
+      <p>Find setups, positioning, supplies, and notes.</p>
+    </a>
+
+    <a class="card home-tile" routerLink="/supplies">
+      <h2>Supplies Reference</h2>
+      <p>Photos and names to help new staff learn quickly.</p>
+    </a>
+
+    <a class="card home-tile" routerLink="/techs">
+      <h2>Tech Education</h2>
+      <p>Back table, mayo setup, and education links.</p>
     </a>
   </div>
 </section>
