@@ -38,6 +38,7 @@ export class LoginComponent {
 }
 */
 
+/*
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -72,6 +73,45 @@ export class LoginComponent {
       error: (err) => {
         this.loading = false;
         this.error = err?.error?.message || 'Login failed.';
+      }
+    });
+  }
+}
+*/
+
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
+import { AuthService } from '../../../core/services/auth.service';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [FormsModule, NgIf],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
+})
+export class LoginComponent {
+  email = '';
+  password = '';
+  error = '';
+
+  constructor(
+    private auth: AuthService,
+    private router: Router
+  ) {}
+
+  // ✅ THIS MUST MATCH THE TEMPLATE
+  onSubmit() {
+    this.error = '';
+
+    this.auth.login(this.email, this.password).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/');
+      },
+      error: (err) => {
+        this.error = err?.error?.message || 'Login failed';
       }
     });
   }
