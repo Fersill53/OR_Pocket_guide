@@ -65,6 +65,7 @@
 </section>
 -->
 
+<!--
 <section class="auth-page">
   <div class="auth-card card">
     <h1>Login</h1>
@@ -101,6 +102,68 @@
 
       <div class="auth-actions">
         <a class="btn" routerLink="/register">Create Account</a>
+      </div>
+    </form>
+  </div>
+</section>
+-->
+
+<section class="auth-page">
+  <div class="auth-card card">
+    <h1 class="auth-title">{{ isRegister ? 'Create Account' : 'Login' }}</h1>
+    <p class="auth-subtitle">
+      {{ isRegister ? 'Create your account to access OR Pocket Guide.' : 'Sign in to access OR Pocket Guide.' }}
+    </p>
+
+    <form (ngSubmit)="submit()" #f="ngForm">
+      <div class="form-row" *ngIf="isRegister">
+        <label for="name">Name</label>
+        <input
+          id="name"
+          name="name"
+          [(ngModel)]="name"
+          placeholder="Your name"
+          autocomplete="name"
+        />
+      </div>
+
+      <div class="form-row">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="you@email.com"
+          autocomplete="email"
+          required
+        />
+      </div>
+
+      <div class="form-row">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          type="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          required
+        />
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" type="submit">
+          {{ isRegister ? 'Create Account' : 'Login' }}
+        </button>
+
+        <button class="btn" type="button" (click)="toggleMode()">
+          {{ isRegister ? 'Back to Login' : 'Create Account' }}
+        </button>
+      </div>
+
+      <div class="error" *ngIf="error">
+        {{ error }}
       </div>
     </form>
   </div>
