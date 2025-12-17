@@ -33,16 +33,18 @@
 </section>
 -->
 
+
+<!--
 <section class="home-page">
   <div class="home-header">
     <h1>OR Pocket Guide</h1>
     <p>Quick reference + training resources for new and current staff.</p>
 
-    <!-- ✅ Logout ONLY exists on Home -->
+    <!-- ✅ Logout ONLY exists on Home -
     <button class="btn danger" type="button" (click)="logout()">Logout</button>
   </div>
 
-  <!-- keep your existing cards/tiles exactly how you like -->
+  <!-- keep your existing cards/tiles exactly how you like -
   <div class="home-grid">
     <a class="card home-tile" routerLink="/procedures">
       <h2>Browse Procedures</h2>
@@ -58,5 +60,44 @@
       <h2>Tech Education</h2>
       <p>Back table, mayo setup, and education links.</p>
     </a>
+  </div>
+</section>
+-->
+
+<section class="home-page">
+  <div class="home-hero card">
+    <div class="hero-left">
+      <h1 class="page-title">OR Pocket Guide</h1>
+      <p class="page-subtitle">
+        Quick reference + training resources for new and current staff.
+      </p>
+
+      <!-- Logout ONLY on Home -->
+      <button class="btn danger" type="button" (click)="logout()">
+        Logout
+      </button>
+    </div>
+
+    <div class="hero-right">
+      <div class="quick-grid">
+        <div class="quick-card card">
+          <h2>Browse Procedures</h2>
+          <p>Find setups, positioning, supplies, and notes.</p>
+          <a class="btn primary" routerLink="/procedures">Go to Procedures</a>
+        </div>
+
+        <div class="quick-card card">
+          <h2>Supplies Reference</h2>
+          <p>Photos and names to help new staff learn quickly.</p>
+          <a class="btn primary" routerLink="/supplies">Go to Supplies</a>
+        </div>
+
+        <div class="quick-card card">
+          <h2>Tech Education</h2>
+          <p>Back table, mayo setup, and education links.</p>
+          <a class="btn primary" routerLink="/techs">Go to Techs</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>

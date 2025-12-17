@@ -1,3 +1,4 @@
+/*
 .home-page {
   display: flex;
   justify-content: center;
@@ -46,5 +47,80 @@
 
   &:hover {
     background: rgba(255,255,255,0.2);
+  }
+}
+*/
+
+.home-page {
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.home-hero {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 22px;
+  align-items: start;
+  padding: 22px;
+}
+
+.page-title {
+  margin: 0 0 10px 0;
+  font-size: 36px;
+  letter-spacing: 0.2px;
+}
+
+.page-subtitle {
+  margin: 0 0 16px 0;
+  opacity: 0.85;
+  line-height: 1.45;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hero-right {
+  display: flex;
+}
+
+.quick-grid {
+  width: 100%;
+  display: grid;
+  gap: 14px;
+}
+
+.quick-card {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+
+  h2 {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  p {
+    margin: 0;
+    opacity: 0.85;
+    line-height: 1.35;
+  }
+
+  // Make sure links look like buttons, not purple underlined anchors
+  a.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .home-hero {
+    grid-template-columns: 1fr;
   }
 }
