@@ -1,0 +1,231 @@
+<!-- <section class="detail-page">
+  <div class="toolbar">
+    <div class="title-block">
+      <h1 class="page-title">Add Back Table Setup</h1>
+      <p class="page-subtitle">
+        Create a reference setup with clear sections and photos for new staff.
+      </p>
+    </div>
+
+    <div class="toolbar-actions">
+      <a class="btn" routerLink="/techs">← Back</a>
+      <button class="btn primary" type="button" (click)="submit()" [disabled]="saving">
+        {{ saving ? 'Saving…' : 'Save Setup' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="state state-empty" *ngIf="error">
+    <div class="state-card card">
+      <h2>Fix this first</h2>
+      <p>{{ error }}</p>
+    </div>
+  </div>
+
+  <div class="grid-two">
+    <div class="col">
+      <div class="card section-card">
+        <h2 class="section-title">Case</h2>
+
+        <label class="field">
+          <span class="label">Case name</span>
+          <input
+            type="text"
+            [(ngModel)]="model.caseName"
+            name="caseName"
+            placeholder="e.g., Total Knee Arthroplasty"
+          />
+        </label>
+
+        <label class="field">
+          <span class="label">Surgeon name</span>
+          <input
+            type="text"
+            [(ngModel)]="model.surgeonName"
+            name="surgeonName"
+            placeholder="e.g., Dr. Smith"
+          />
+        </label>
+      </div>
+
+      <div class="card section-card">
+        <h2 class="section-title">Gowns & Gloves</h2>
+        <p class="hint">One item per line.</p>
+
+        <textarea
+          rows="6"
+          [(ngModel)]="model.gownsAndGlovesText"
+          name="gownsAndGlovesText"
+          placeholder="Example:
+2 sterile gowns
+Gloves 7.5 x2
+Gloves 8 x2"
+        ></textarea>
+      </div>
+
+      <div class="card section-card">
+        <h2 class="section-title">Drapes</h2>
+        <p class="hint">One item per line.</p>
+
+        <textarea
+          rows="6"
+          [(ngModel)]="model.drapesText"
+          name="drapesText"
+          placeholder="Example:
+U-drape
+Split sheet
+Ioban"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card section-card">
+        <h2 class="section-title">Instrument Trays</h2>
+        <p class="hint">One tray per line.</p>
+
+        <textarea
+          rows="6"
+          [(ngModel)]="model.instrumentTraysText"
+          name="instrumentTraysText"
+          placeholder="Example:
+Basic ortho tray
+TKA tray
+Pulsavac"
+        ></textarea>
+      </div>
+
+      <div class="card section-card">
+        <h2 class="section-title">Medication</h2>
+        <p class="hint">One med per line.</p>
+
+        <textarea
+          rows="6"
+          [(ngModel)]="model.medicationsText"
+          name="medicationsText"
+          placeholder="Example:
+Ancef 2g
+TXA 1g
+Local: bupivacaine"
+        ></textarea>
+      </div>
+
+      <div class="card section-card">
+        <h2 class="section-title">Upload Pictures</h2>
+        <p class="hint">Uploads go to MongoDB via your backend.</p>
+
+        <div class="photo-actions">
+          <input
+            #fileInput
+            type="file"
+            accept="image/*"
+            multiple
+            (change)="onFilesSelected(fileInput)"
+          />
+        </div>
+
+        <div class="photos-grid" *ngIf="previews.length">
+          <div class="photo-card" *ngFor="let p of previews; let i = index">
+            <img [src]="p.url" [alt]="p.name" />
+            <div class="photo-meta">
+              <span class="photo-name">{{ p.name }}</span>
+              <button type="button" class="btn danger tiny" (click)="removeFile(i)">
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-photos" *ngIf="!previews.length">
+          No photos selected yet.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+-->
+
+<section class="list-page">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="title-block">
+      <h1 class="page-title">Back Table Education</h1>
+      <p class="page-subtitle">
+        Reference back table setups by case and surgeon. Designed to help new staff
+        visualize layouts and instruments.
+      </p>
+    </div>
+
+    <div class="toolbar-actions">
+      <!-- ✅ ADD BUTTON -->
+      <a
+        class="btn primary"
+        routerLink="/techs/backtable/add"
+      >
+        + Add Back Table Setup
+      </a>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="state state-loading" *ngIf="loading$ | async">
+    <div class="pulse-dot"></div>
+    <span>Loading back table setups…</span>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    class="state state-empty"
+    *ngIf="(empty$ | async) && !(loading$ | async)"
+  >
+    <div class="state-card card">
+      <h2>No back table setups yet</h2>
+      <p>
+        Create your first back table setup to help techs learn layouts,
+        trays, medications, and draping.
+      </p>
+
+      <a
+        class="btn primary"
+        routerLink="/techs/backtable/add"
+      >
+        Create Back Table Setup
+      </a>
+    </div>
+  </div>
+
+  <!-- Results Grid -->
+  <div
+    class="grid"
+    *ngIf="!(empty$ | async) && !(loading$ | async)"
+  >
+    <a
+      class="proc-card card"
+      *ngFor="let b of (items$ | async) ?? []"
+      [routerLink]="['/techs/backtable', b.id]"
+    >
+      <div class="proc-main">
+        <div class="proc-title-row">
+          <h2>{{ b.caseName }}</h2>
+          <span class="service-pill">
+            {{ b.surgeonName }}
+          </span>
+        </div>
+
+        <div class="meta-row">
+          <span *ngIf="b.instrumentTrays?.length" class="chip">
+            🧰 {{ b.instrumentTrays.length }} trays
+          </span>
+
+          <span *ngIf="b.medications?.length" class="chip">
+            💉 {{ b.medications.length }} meds
+          </span>
+
+          <span *ngIf="b.photos?.length" class="chip">
+            📸 {{ b.photos.length }} photos
+          </span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
