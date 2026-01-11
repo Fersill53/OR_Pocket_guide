@@ -1,0 +1,65 @@
+<section class="list-page">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="title-block">
+      <h1 class="page-title">Back Table Education</h1>
+      <p class="page-subtitle">
+        Reference back table setups by case and surgeon. Designed to help new staff
+        visualize layouts and instruments.
+      </p>
+    </div>
+
+    <div class="toolbar-actions">
+      <a class="btn primary" routerLink="/techs/backtable/add">+ Add Back Table Setup</a>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="state state-loading" *ngIf="loading$ | async">
+    <div class="pulse-dot"></div>
+    <span>Loading back table setups…</span>
+  </div>
+
+  <!-- Empty State -->
+  <div class="state state-empty" *ngIf="(empty$ | async) && !(loading$ | async)">
+    <div class="state-card card">
+      <h2>No back table setups yet</h2>
+      <p>
+        Create your first back table setup to help techs learn layouts,
+        trays, medications, and draping.
+      </p>
+
+      <a class="btn primary" routerLink="/techs/backtable/add">Create Back Table Setup</a>
+    </div>
+  </div>
+
+  <!-- Results Grid -->
+  <div class="grid" *ngIf="!(empty$ | async) && !(loading$ | async)">
+    <a
+      class="proc-card card"
+      *ngFor="let b of (items$ | async) ?? []"
+      [routerLink]="['/techs/backtable', b.id]"
+    >
+      <div class="proc-main">
+        <div class="proc-title-row">
+          <h2>{{ b.caseName }}</h2>
+          <span class="service-pill">{{ b.surgeonName }}</span>
+        </div>
+
+        <div class="meta-row">
+          <span *ngIf="b.instrumentTrays?.length" class="chip">
+            🧰 {{ b.instrumentTrays.length }} trays
+          </span>
+
+          <span *ngIf="b.medications?.length" class="chip">
+            💉 {{ b.medications.length }} meds
+          </span>
+
+          <span *ngIf="b.photos?.length" class="chip">
+            📸 {{ b.photos.length }} photos
+          </span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>

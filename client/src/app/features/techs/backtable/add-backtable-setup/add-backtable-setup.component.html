@@ -145,8 +145,9 @@ Local: bupivacaine"
 </section>
 -->
 
+<!--
 <section class="list-page">
-  <!-- Toolbar -->
+  <!-- Toolbar -
   <div class="toolbar">
     <div class="title-block">
       <h1 class="page-title">Back Table Education</h1>
@@ -157,7 +158,7 @@ Local: bupivacaine"
     </div>
 
     <div class="toolbar-actions">
-      <!-- ✅ ADD BUTTON -->
+      <!-- ✅ ADD BUTTON -
       <a
         class="btn primary"
         routerLink="/techs/backtable/add"
@@ -167,13 +168,13 @@ Local: bupivacaine"
     </div>
   </div>
 
-  <!-- Loading -->
+  <!-- Loading -
   <div class="state state-loading" *ngIf="loading$ | async">
     <div class="pulse-dot"></div>
     <span>Loading back table setups…</span>
   </div>
 
-  <!-- Empty State -->
+  <!-- Empty State -
   <div
     class="state state-empty"
     *ngIf="(empty$ | async) && !(loading$ | async)"
@@ -194,7 +195,7 @@ Local: bupivacaine"
     </div>
   </div>
 
-  <!-- Results Grid -->
+  <!-- Results Grid -
   <div
     class="grid"
     *ngIf="!(empty$ | async) && !(loading$ | async)"
@@ -228,4 +229,142 @@ Local: bupivacaine"
       </div>
     </a>
   </div>
+</section>
+-->
+
+<section class="detail-page">
+  <div class="toolbar">
+    <div class="title-block">
+      <h1 class="page-title">Add Back Table Setup</h1>
+      <p class="page-subtitle">
+        Fill out the setup details. Keep each section simple and readable for new staff.
+      </p>
+    </div>
+
+    <div class="toolbar-actions">
+      <a class="btn" routerLink="/techs/backtable">← Back</a>
+    </div>
+  </div>
+
+  <form class="card form-card" (ngSubmit)="submit()" #f="ngForm">
+    <!-- SECTION: Case / Surgeon -->
+    <div class="card section-card">
+      <h2 class="section-title">Case Info</h2>
+
+      <div class="field-grid">
+        <label class="field">
+          <span class="label">Case name</span>
+          <input
+            name="caseName"
+            type="text"
+            required
+            [(ngModel)]="model.caseName"
+            placeholder="e.g., Total Knee Arthroplasty"
+          />
+        </label>
+
+        <label class="field">
+          <span class="label">Surgeon name</span>
+          <input
+            name="surgeonName"
+            type="text"
+            required
+            [(ngModel)]="model.surgeonName"
+            placeholder="e.g., Dr. Smith"
+          />
+        </label>
+      </div>
+    </div>
+
+    <!-- SECTION: Gowns & Gloves -->
+    <div class="card section-card">
+      <h2 class="section-title">Gowns and Gloves</h2>
+
+      <label class="field">
+        <span class="label">One per line</span>
+        <textarea
+          name="gownsAndGlovesText"
+          rows="4"
+          [(ngModel)]="gownsAndGlovesText"
+          placeholder="Size 7.5 gloves&#10;XL gown&#10;…"
+        ></textarea>
+      </label>
+    </div>
+
+    <!-- SECTION: Drapes -->
+    <div class="card section-card">
+      <h2 class="section-title">Drapes</h2>
+
+      <label class="field">
+        <span class="label">One per line</span>
+        <textarea
+          name="drapesText"
+          rows="4"
+          [(ngModel)]="drapesText"
+          placeholder="U-drape&#10;Split sheet&#10;…"
+        ></textarea>
+      </label>
+    </div>
+
+    <!-- SECTION: Instrument Trays -->
+    <div class="card section-card">
+      <h2 class="section-title">Instrument Trays</h2>
+
+      <label class="field">
+        <span class="label">One per line</span>
+        <textarea
+          name="instrumentTraysText"
+          rows="4"
+          [(ngModel)]="instrumentTraysText"
+          placeholder="Basic ortho tray&#10;TKA tray&#10;…"
+        ></textarea>
+      </label>
+    </div>
+
+    <!-- SECTION: Medications -->
+    <div class="card section-card">
+      <h2 class="section-title">Medications</h2>
+
+      <label class="field">
+        <span class="label">One per line</span>
+        <textarea
+          name="medicationsText"
+          rows="4"
+          [(ngModel)]="medicationsText"
+          placeholder="Ancef 2g&#10;TXA&#10;…"
+        ></textarea>
+      </label>
+    </div>
+
+    <!-- SECTION: Photos (UI only for now — backend wiring comes next) -->
+    <div class="card section-card">
+      <h2 class="section-title">Pictures</h2>
+
+      <label class="field">
+        <span class="label">Upload pictures</span>
+        <input type="file" multiple (change)="onFilesSelected($event)" />
+        <small class="hint">
+          Tip: add a photo of the final back table + closeups of specialty items.
+        </small>
+      </label>
+
+      <div class="chip-row" *ngIf="selectedFiles?.length">
+        <span class="chip" *ngFor="let file of selectedFiles">
+          📎 {{ file.name }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions-row">
+      <button class="btn" type="button" routerLink="/techs/backtable">Cancel</button>
+      <button class="btn primary" type="submit" [disabled]="saving">
+        {{ saving ? 'Saving…' : 'Save Setup' }}
+      </button>
+    </div>
+
+    <div class="state state-error" *ngIf="error">
+      <span>❌ {{ error }}</span>
+    </div>
+  </form>
 </section>
