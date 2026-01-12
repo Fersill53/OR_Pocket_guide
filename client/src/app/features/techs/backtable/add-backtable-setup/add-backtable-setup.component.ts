@@ -327,6 +327,7 @@ export class AddBacktableSetupComponent {
 }
 */
 
+/*
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
@@ -371,10 +372,10 @@ export class AddBacktableSetupComponent {
 
   constructor(private router: Router, private backtable: BacktableSetupService) {}
 
-  /**
+  
    * ✅ Template compatibility (your HTML calls onFilesSelected($event))
    * This wrapper extracts the input element and reuses the real handler.
-   */
+   
   onFilesSelected(event: Event) {
     const input = event.target as HTMLInputElement | null;
     if (!input) return;
@@ -383,7 +384,7 @@ export class AddBacktableSetupComponent {
 
   /**
    * ✅ Real handler (works with an <input type="file"> element)
-   */
+   *
   onFileSelected(input: HTMLInputElement) {
     const list = input.files;
     if (!list || list.length === 0) return;
@@ -395,6 +396,157 @@ export class AddBacktableSetupComponent {
     });
 
     // allow selecting the same file again
+    input.value = "";
+  }
+
+  removeFile(i: number) {
+    const preview = this.previews[i];
+    if (preview?.url) URL.revokeObjectURL(preview.url);
+
+    this.previews.splice(i, 1);
+    this.files.splice(i, 1);
+  }
+
+  cancel() {
+    this.router.navigate([this.returnUrl], { queryParams: this.returnQuery });
+  }
+
+  submit() {
+    this.error = "";
+
+    const caseName = this.model.caseName.trim();
+    if (!caseName) {
+      this.error = "Case name is required.";
+      return;
+    }
+
+    const payload = {
+      caseName,
+      surgeonName: this.model.surgeonName.trim(),
+      gownsAndGloves: this.toLines(this.model.gownsAndGlovesText),
+      drapes: this.toLines(this.model.drapesText),
+      instrumentTrays: this.toLines(this.model.instrumentTraysText),
+      medications: this.toLines(this.model.medicationsText),
+    };
+
+    this.saving = true;
+
+    this.backtable.create(payload, this.files).subscribe({
+      next: () => {
+        this.saving = false;
+        this.router.navigate([this.returnUrl], { queryParams: this.returnQuery });
+      },
+      error: (err) => {
+        this.saving = false;
+        this.error = err?.error?.message || "Failed to save back table setup.";
+      },
+    });
+  }
+
+  private toLines(text: string): string[] {
+    return (text || "")
+      .split("\n")
+      .map((s) => s.trim())
+      .filter(Boolean);
+  }
+}
+*/
+
+import { Component } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { Router, RouterLink } from "@angular/router";
+
+import { BacktableSetupService } from "../../../../core/services/backtable-setup.service";
+
+@Component({
+  selector: "app-add-backtable-setup",
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
+  templateUrl: "./add-backtable-setup.component.html",
+  styleUrls: ["./add-backtable-setup.component.scss"],
+})
+export class AddBacktableSetupComponent {
+  saving = false;
+  error = "";
+
+  model = {
+    caseName: "",
+    surgeonName: "",
+    gownsAndGlovesText: "",
+    drapesText: "",
+    instrumentTraysText: "",
+    medicationsText: "",
+  };
+
+  // ✅ Actual files to send to backend
+  files: File[] = [];
+
+  // ✅ Local preview URLs (not stored)
+  previews: { name: string; url: string }[] = [];
+
+  // ✅ Template compatibility (some HTML expects `selectedFiles`)
+  get selectedFiles(): File[] {
+    return this.files;
+  }
+
+  // ✅ Template compatibility (your HTML expects these as top-level fields)
+  get gownsAndGlovesText(): string {
+    return this.model.gownsAndGlovesText;
+  }
+  set gownsAndGlovesText(v: string) {
+    this.model.gownsAndGlovesText = v ?? "";
+  }
+
+  get drapesText(): string {
+    return this.model.drapesText;
+  }
+  set drapesText(v: string) {
+    this.model.drapesText = v ?? "";
+  }
+
+  get instrumentTraysText(): string {
+    return this.model.instrumentTraysText;
+  }
+  set instrumentTraysText(v: string) {
+    this.model.instrumentTraysText = v ?? "";
+  }
+
+  get medicationsText(): string {
+    return this.model.medicationsText;
+  }
+  set medicationsText(v: string) {
+    this.model.medicationsText = v ?? "";
+  }
+
+  // ✅ Where to go after save/cancel (Back table tab)
+  private readonly returnUrl = "/techs";
+  private readonly returnQuery = { tab: "backtable" };
+
+  constructor(private router: Router, private backtable: BacktableSetupService) {}
+
+  /**
+   * ✅ Template compatibility (your HTML calls onFilesSelected($event))
+   */
+  onFilesSelected(event: Event) {
+    const input = event.target as HTMLInputElement | null;
+    if (!input) return;
+    this.onFileSelected(input);
+  }
+
+  /**
+   * ✅ Real handler for <input type="file">
+   */
+  onFileSelected(input: HTMLInputElement) {
+    const list = input.files;
+    if (!list || list.length === 0) return;
+
+    Array.from(list).forEach((file) => {
+      this.files.push(file);
+      const url = URL.createObjectURL(file);
+      this.previews.push({ name: file.name, url });
+    });
+
     input.value = "";
   }
 
