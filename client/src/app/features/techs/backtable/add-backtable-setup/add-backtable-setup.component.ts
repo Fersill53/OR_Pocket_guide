@@ -243,7 +243,7 @@ export class AddBacktableSetupComponent {
         gownsAndGlovesText: "",
         drapesText: "",
         instrumentTraysText: "",
-        medicaitonsText: "",
+        medicationsText: "",
     };
 
     // Actual files to send to backend
@@ -299,7 +299,7 @@ export class AddBacktableSetupComponent {
             gownsAndGloves: this.toLines(this.model.gownsAndGlovesText),
             drapes: this.toLines(this.model.drapesText),
             instrumentTrays: this.toLines(this.model.instrumentTraysText),
-            medications: this.toLines(this.model.medicaitonsText),
+            medications: this.toLines(this.model.medicationsText),
         };
 
         this.saving = true;
