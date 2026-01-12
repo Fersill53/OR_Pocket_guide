@@ -158,7 +158,7 @@ export const routes: Routes = [
   // fallback
   { path: '**', redirectTo: '' }
 ];
-*/
+*
 
 import { Routes } from '@angular/router';
 
@@ -184,6 +184,47 @@ export const routes: Routes = [
 
   { path: 'supplies', component: SuppliesComponent },
   { path: 'techs', component: TechsComponent },
+
+  { path: '**', redirectTo: '' }
+];
+*/
+
+import { Routes } from '@angular/router';
+
+import { HomeComponent } from './features/home/home.component';
+
+import { ProceduresListComponent } from './features/procedures/procedures-list/procedures-list.component';
+import { ProcedureDetailComponent } from './features/procedures/procedure-detail/procedure-detail.component';
+import { AddProcedureComponent } from './features/procedures/add-procedure/add-procedure.component';
+
+import { SuppliesComponent } from './features/supplies/supplies.component';
+import { TechsComponent } from './features/techs/techs.component';
+
+import { AddBacktableSetupComponent } from './features/techs/backtable/add-backtable-setup/add-backtable-setup.component';
+
+export const routes: Routes = [
+  //Home
+  { path : '', component: HomeComponent },
+
+  //Procedures
+
+  { path: 'procedures', component: ProcedureDetailComponent },
+  { path: 'procedures/add/new', component: AddProcedureComponent },
+  { path: 'procedures/:id', component: ProcedureDetailComponent },
+
+  // Supplies
+
+  { path: 'supplies', component: SuppliesComponent },
+
+  // Techs main page (tabs live inside this page)
+
+  { path: 'techs', component: TechsComponent },
+
+  // Backtable add page (Where add backtable layout button goes)
+
+  { path: 'techs/backtable/add', component: AddBacktableSetupComponent },
+
+  // Wildcard
 
   { path: '**', redirectTo: '' }
 ];
