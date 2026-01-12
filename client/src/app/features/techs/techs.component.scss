@@ -1,4 +1,4 @@
-.techs-page {
+/*.techs-page {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -95,4 +95,128 @@
     opacity: 0.8;
     margin-top: 0.4rem;
   }
+}
+*/
+
+.techs-page {
+  padding: 24px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.page-subtitle {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.card {
+  border-radius: 14px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.subtabs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  border: 0;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  font-weight: 600;
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.tab:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.tab.active {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.content {
+  margin-top: 10px;
+}
+
+.content-card {
+  min-height: 220px;
+}
+
+.content-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.muted {
+  opacity: 0.8;
+  margin: 6px 0 0 0;
+}
+
+.muted.small {
+  font-size: 13px;
+  margin-top: 14px;
+}
+
+.list {
+  margin: 12px 0 0 18px;
+  padding: 0;
+  line-height: 1.6;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  white-space: nowrap;
+}
+
+.btn.primary {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.btn.primary:hover {
+  background: rgba(255, 255, 255, 0.16);
 }

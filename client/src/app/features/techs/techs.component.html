@@ -1,3 +1,5 @@
+
+<!--
 <section class="page techs-page">
   <header class="page-header">
     <h1>Techs</h1>
@@ -6,7 +8,7 @@
     </p>
   </header>
 
-  <!-- Secondary toolbar / tab bar -->
+  <!-- Secondary toolbar / tab bar 
   <nav class="techs-tabs">
     <button
       type="button"
@@ -36,9 +38,9 @@
     </button>
   </nav>
 
-  <!-- Tab content -->
+  <!-- Tab content -
   <section class="tab-content">
-    <!-- Education -->
+    <!-- Education -
     <div *ngIf="isActive('education')" class="card content-card">
       <h2>Education</h2>
       <p>
@@ -58,7 +60,7 @@
       </p>
     </div>
 
-    <!-- Back table setup -->
+    <!-- Back table setup -
     <div *ngIf="isActive('backtable')" class="card content-card">
       <h2>Back Table Setup</h2>
       <p>
@@ -79,7 +81,7 @@
       </p>
     </div>
 
-    <!-- Mayo setup -->
+    <!-- Mayo setup 
     <div *ngIf="isActive('mayo')" class="card content-card">
       <h2>Mayo Setup</h2>
       <p>
@@ -99,4 +101,107 @@
       </p>
     </div>
   </section>
+</section>
+-->
+
+<section class="techs-page">
+  <div class="toolbar">
+    <div class="title-block">
+      <h1 class="page-title">Techs</h1>
+      <p class="page-subtitle">
+        Resources for OR techs: education, back table and mayo stand setup.
+      </p>
+    </div>
+  </div>
+
+  <!-- Sub-toolbar (tabs) -->
+  <div class="subtabs card">
+    <button
+      type="button"
+      class="tab"
+      [class.active]="activeTab === 'education'"
+      (click)="setTab('education')"
+    >
+      Education
+    </button>
+
+    <button
+      type="button"
+      class="tab"
+      [class.active]="activeTab === 'backtable'"
+      (click)="setTab('backtable')"
+    >
+      Back Table Setup
+    </button>
+
+    <button
+      type="button"
+      class="tab"
+      [class.active]="activeTab === 'mayo'"
+      (click)="setTab('mayo')"
+    >
+      Mayo Setup
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- EDUCATION -->
+    <div *ngIf="activeTab === 'education'" class="card content-card">
+      <h2>Education</h2>
+      <p class="muted">
+        Add education links, videos, and quick notes for new staff.
+      </p>
+
+      <ul class="list">
+        <li>Basic OR flow + sterile technique reminders</li>
+        <li>Positioning quick hits (supine, lateral, prone)</li>
+        <li>Common ortho supplies + names</li>
+      </ul>
+    </div>
+
+    <!-- BACK TABLE -->
+    <div *ngIf="activeTab === 'backtable'" class="card content-card">
+      <div class="content-header">
+        <div>
+          <h2>Back Table Setup</h2>
+          <p class="muted">
+            Visual and step-by-step guidance for standard back table layouts.
+          </p>
+        </div>
+
+        <!-- ✅ THE BUTTON YOU WANT -->
+        <a class="btn primary" routerLink="/techs/backtable/add">
+          + Add Back Table Setup
+        </a>
+      </div>
+
+      <ol class="list">
+        <li>Open and organize basins, towels, and drapes.</li>
+        <li>Separate instruments by type: cutting, grasping, retracting, etc.</li>
+        <li>Line up clamps and hemostats from small to large.</li>
+        <li>Keep sharp items in a designated “sharps zone”.</li>
+        <li>Reserve a clean zone for implants / grafts if needed.</li>
+      </ol>
+
+      <p class="muted small">
+        Later you can add diagrams or photos (e.g. ortho, laparoscopy, neuro sets)
+        plus procedure-specific layout variations.
+      </p>
+    </div>
+
+    <!-- MAYO -->
+    <div *ngIf="activeTab === 'mayo'" class="card content-card">
+      <h2>Mayo Setup</h2>
+      <p class="muted">
+        Steps and examples for building a clean, organized mayo stand.
+      </p>
+
+      <ul class="list">
+        <li>Keep high-use items closest to the surgeon’s dominant side</li>
+        <li>Arrange instruments in a predictable left-to-right flow</li>
+        <li>Separate sharps from non-sharps</li>
+      </ul>
+    </div>
+  </div>
 </section>
